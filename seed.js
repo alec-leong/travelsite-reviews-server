@@ -86,32 +86,27 @@ const db = mongoose.connection;
 // handle errors after initial connection was established by listening for error events on the connection
 db.on('error', err => console.error(err));
 
-// 
-const dropCollection = () => {
-  console.log('Hello from dropCollection');
 
+const findCollection = (collection) => {
   return new Promise((resolve, reject) => {
     // drop `listings` collection if exists
-    db.db.listCollections().toArray((err, collections) => {
-      if (err) { reject(err); } 
-      
-      collections.map(({name}) => {
-        if (name === COLLECTION) {
-          db.dropDatabase(err => 
-            err 
-              ? reject(err) 
-              : resolve(name)
-          );
-        }
+    db.db.listCollections({name: collection})
+      .next((err, res) => {
+        err ? reject(err) : resolve(res)
       })
-
-      reject(err)
-    });
   }); // end Promise
-}; // end dropCollect()
+}; // end findCollection()
+
+const dropCollection = (collection) => {
+  return new Promise((resolve, reject) => {
+    // drop `listings` collection if exists
+    db.db.dropCollection(collection, (err, res) => {
+      err ? reject(err) : resolve(res)
+    })
+  }); // end Promise
+}
 
 const populateDb = () => {
-  console.log('Hello from populateDb');
   // instance of schema 
   const reviewSchema = new Schema({
     username: String,
@@ -140,13 +135,18 @@ const populateDb = () => {
     })
   });
 }
+
 // successful connection
 db.once('open', () => {
   console.log(`Using database ${db.name.green}`);
-  
-  dropCollection() 
-    .then(() => console.log(`Collection dropped`.yellow))
-    .catch(err => console.error(err))
-    .finally(() => populateDb())
+
+  findCollection(COLLECTION)
+    .then(res => res.name)
+    .then(name => dropCollection(name))
+    .then(res => {
+      console.log(`Collection ${COLLECTION.green} dropped`);
+      populateDb();
+    })
+    .catch(err => populateDb())
 });
 
