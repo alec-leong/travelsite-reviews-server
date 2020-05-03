@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const axios = require('axios');
 const colors = require('colors');
-const {Listings} = require('./query.js')
+const {Listings} = require('./db/index.js')
 
 
 
@@ -37,8 +37,8 @@ app.use((req, res, next) => {
 
 //=========================== HTTP request handlers ============================
 
-app.get('/', (req, res) => {
-  Listings.findOne()
+app.get('/:id', ({params: {id}}, res) => {
+  Listings.findById(id)
     .then(query => res.status(200).send(query))
     .catch(err => res.status(500).send(err))
 })
