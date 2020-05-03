@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const axios = require('axios');
 const colors = require('colors');
-const {Listings} = require('./db/index.js')
+const {Listings} = require('../db/index.js')
 
 
 
