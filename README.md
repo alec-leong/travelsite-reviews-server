@@ -11,7 +11,7 @@ $ mongo
 > use tripAdvisor
 > show collections
 > db.listings.count()
-> db.listings.findOne()
+> db.listings.findOne({}, { "_id": 1 })
 
 *** Copy the SHA from `db.listings.findOne()` ****
 
