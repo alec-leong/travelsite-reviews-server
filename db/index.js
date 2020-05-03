@@ -1,15 +1,10 @@
+const { URI, OPTIONS, COLLECTION } = require('./config.js');
 const Promise = require('bluebird');
 const mongoose = Promise.promisifyAll(require('mongoose'));
-const {Schema} = mongoose;
+const { Schema } = mongoose;
+const colors = require('colors');
 
-// configuration
-const SERVER = '127.0.0.1:27017';
-const DB = 'tripAdvisor';
-const URI = `mongodb://${SERVER}/${DB}`;
-const OPTIONS =  {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false};
-const COLLECTION = 'listings';
-
-// instance of schema 
+// instance of child schema 
 const reviewSchema = new Schema({
   username: String,
   location: String,
@@ -23,6 +18,7 @@ const reviewSchema = new Schema({
   helpful: Number,
 });
 
+// instance of parent schema
 const listingsSchema = new Schema({
   reviews: [reviewSchema]
 });
@@ -35,17 +31,18 @@ mongoose.connect(URI, OPTIONS)
   .then(() => console.log(`Connected to ${'mongoDB'.green} Database`))
   .catch(err => console.error(err))
 
-// connection to database
-const db = mongoose.connection;
+// connection to database 
+const connection = mongoose.connection;
 
 // handle errors after initial connection was established by listening for error events on the connection
-db.on('error', err => console.error(err));
+connection.on('error', err => console.error(err));
 
 // successful connection
-db.once('open', () => {
-  console.log(`Using database ${db.name.green}`);
+connection.once('open', () => {
+  console.log(`Using database ${connection.name.green}`);
 });
 
 module.exports = {
-  Listings
+  connection, // connection to database
+  Listings // db.listings collection
 }
