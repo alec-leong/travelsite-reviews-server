@@ -1,13 +1,24 @@
-===== Seeding Instructions ===== 
+===== 1. Seeding Instructions =====
 
-========== Terminal 1 ==========
-$ npm run seed 
+=========== Terminal  1 ===========
+$ npm run seed
 
-========== Terminal 2 ==========
-$ mongo 
+=========== Terminal  2 ===========
+
+$ mongo
 
 > show dbs
 > use tripAdvisor
 > show collections
-> db.listings.findOne().pretty()
-> db.listings.count() 
+> db.listings.count()
+> db.listings.findOne({}, { "_id": 1 })
+
+*** Copy the SHA from `db.listings.findOne()` ****
+
+======= 2. API Instructions =======
+
+=========== Terminal  3 ===========
+$ npm start
+
+=========== Terminal  4 ===========
+$ node ./client/index.js PAST-SHA-HERE-NO-QUOTES-NEEDED
