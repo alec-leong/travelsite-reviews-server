@@ -1,9 +1,9 @@
-===== 1. Seeding Instructions =====
+======= 1. Seeding Instructions =======
 
-=========== Terminal  1 ===========
+============= Terminal  1 =============
 $ npm run seed
 
-=========== Terminal  2 ===========
+============= Terminal  2 =============
 
 $ mongo
 
@@ -13,12 +13,23 @@ $ mongo
 > db.listings.count()
 > db.listings.findOne({}, { "_id": 1 })
 
-*** Copy the SHA from `db.listings.findOne()` ****
 
-======= 2. API Instructions =======
 
-=========== Terminal  3 ===========
+
+
+========= 2. API Instructions =========
+
+============= Terminal  3 =============
 $ npm start
 
-=========== Terminal  4 ===========
-$ node ./client/index.js PAST-SHA-HERE-NO-QUOTES-NEEDED
+============= Terminal  4 =============
+$ npm run api
+
+
+
+
+
+========= 3. Test Instruction =========
+
+============= Terminal  5 =============
+$ npm test
