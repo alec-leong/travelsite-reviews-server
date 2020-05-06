@@ -1,13 +1,15 @@
 import React from 'react';
+import Header from './Header';
 import Languages from './Languages';
 import TimeOfYear from './TimeOfYear';
-import Header from './Header';
+import TravelerType from './TravelerType';
 
 const App = () => (
   <div>
-    {/* <Languages /> */}
     <Header />
+    <TravelerType />
     <TimeOfYear />
+    <Languages />
   </div>
 );
 

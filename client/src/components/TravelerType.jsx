@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { Label, P } from '../css/style';
 
 const data = [
-  { 'Mar-May': false },
-  { 'Jun-Aug': false },
-  { 'Sep-Nov': false },
-  { 'Dec-Feb': false },
+  { Families: false },
+  { Couples: false },
+  { Solo: false },
+  { Business: false },
+  { Friends: false },
 ];
 
-class TimeOfYear extends Component {
+class TravelerType extends Component {
   constructor(props) {
     // initialize props
     super(props);
@@ -41,7 +42,7 @@ class TimeOfYear extends Component {
 
     return (
       <div>
-        <P>Time of year</P>
+        <P>Travel type</P>
         <form>
           {data.map((month, i) => {
             const [key] = Object.keys(month);
@@ -66,4 +67,4 @@ class TimeOfYear extends Component {
   }
 }
 
-export default TimeOfYear;
+export default TravelerType;

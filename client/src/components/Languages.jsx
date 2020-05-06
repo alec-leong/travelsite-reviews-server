@@ -1,6 +1,24 @@
 import React from 'react';
 import { Label, P, Span } from '../css/style';
 
+const data = [
+  { 'All languages': 1586 },
+  { English: 1557 },
+  { Spanish: 11 },
+  { French: 3 },
+  { Hebrew: 3 },
+  { Portuguese: 3 },
+  { Danish: 1 },
+  { German: 1 },
+  { Italian: 1 },
+  { Japanese: 1 },
+  { Korean: 1 },
+  { Dutch: 1 },
+  { Polish: 1 },
+  { Swedish: 1 },
+  { 'Chinese (Sim.)': 1 },
+];
+
 class Languages extends React.Component {
   /**
    * Constructor
@@ -8,7 +26,7 @@ class Languages extends React.Component {
    */
   constructor(props) {
     super(props); // Sets `this.props`. Otherwise, when accessing `this.props`, would be `undefined`
-    
+
     this.state = {
       selected: '',
     };
@@ -35,31 +53,29 @@ class Languages extends React.Component {
    */
   render() {
     const { selected } = this.state;
+
     return (
       <div>
         <P>Language</P>
-        <Label>
-          <input
-            type="radio"
-            name="all" 
-            value="All Languages"
-            checked={selected === 'all'}
-            onChange={this.handleInputRadioChange}
-          />
-          All Languages <Span>(99)</Span>
-        </Label>
-        <br />
-        <Label>
-          <input
-            type="radio"
-            name="en"
-            value="English"
-            checked={selected === 'en'}
-            onChange={this.handleInputRadioChange}
-          />
-          English
-        </Label>
-        <br />
+        <form>
+          {data.map((lang, i) => {
+            const [key] = Object.keys(lang);
+
+            return (
+              <Label key={i}>
+                <input
+                  type="radio"
+                  name={key}
+                  checked={selected === key}
+                  onChange={this.handleInputRadioChange}
+                />
+                {key}
+                <Span> ({lang[key]})</Span>
+                <br />
+              </Label>
+            );
+          })}
+        </form>
       </div>
     );
   }
