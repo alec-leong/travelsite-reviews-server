@@ -75,5 +75,6 @@ const promises = listings.reduce((accum, listing) => {
 
 // save documents to collection
 Promise.all(promises)
-  .then(({ length }) => console.log(`${length.cyan} documents saved to '${Listings.modelName.green}'`))
-  .catch(console.error);
+  .then(({ length }) => console.log(`${length.toString().cyan} documents saved to '${Listings.modelName.green}'`))
+  .catch(console.error)
+  .finally(() => connection.close());
