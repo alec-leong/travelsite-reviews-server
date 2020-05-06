@@ -1,11 +1,13 @@
-const { URI, OPTIONS, COLLECTION } = require('./config.js');
+const colors = require('colors');
 const Promise = require('bluebird');
 const mongoose = Promise.promisifyAll(require('mongoose'));
-const { Schema } = mongoose;
-const colors = require('colors');
+const { COLLECTION, OPTIONS, URI } = require('./config.js');
 
-// instance of child schema 
+const { Schema } = mongoose;
+
+// instance of child schema
 const reviewSchema = new Schema({
+  _id: Array,
   username: String,
   location: String,
   contributions: Number,
@@ -20,29 +22,32 @@ const reviewSchema = new Schema({
 
 // instance of parent schema
 const listingsSchema = new Schema({
-  reviews: [reviewSchema]
+  _id: Number, // override ObjectId - the SHA
+  reviews: [reviewSchema],
 });
 
 // create model(model_name, instance_of_schema, collection_name)
 const Listings = mongoose.model(COLLECTION, listingsSchema);
 
-// initial connection and handle initial connection errors
+// initial conn and handle initial conn errors
 mongoose.connect(URI, OPTIONS)
-  .then(() => console.log(`Connected to ${'mongoDB'.green} Database`))
-  .catch(err => console.error(err))
+  .then(() => console.log(`Connected to ${colors.green('mongoDB')} Database`))
+  .catch(console.error);
 
-// connection to database 
-const connection = mongoose.connection;
+// conn to database
+const { connection } = mongoose;
 
-// handle errors after initial connection was established by listening for error events on the connection
-connection.on('error', err => console.error(err));
+// handle errors after initial conn was established by listening for error events on the conn
+connection.on('error', (err) => console.error(err));
 
-// successful connection
+// successful conn
 connection.once('open', () => {
   console.log(`Using database ${connection.name.green}`);
 });
 
 module.exports = {
-  connection, // connection to database
-  Listings // db.listings collection
-}
+  connection, // conn to database
+  Listings, // db.listings collection
+  listingsSchema,
+  reviewSchema,
+};
