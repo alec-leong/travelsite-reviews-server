@@ -1,15 +1,10 @@
-// server setup
-const express = require('express');
-const morgan = require('morgan');
-const path = require('path');
-const axios = require('axios');
 const colors = require('colors');
-const {Listings} = require('../db/index.js')
+const express = require('express');
+const path = require('path');
+const { Listings } = require('../db/index.js');
 
 
-
-
-//============================ Express  Middleware =============================
+/* ======================================= Express server ======================================= */
 
 // create express application
 const app = express();
@@ -17,28 +12,32 @@ const app = express();
 const PORT = 3000;
 
 // listen
-app.listen(PORT, () => console.log(`Server listening on PORT ${PORT.toString().green}`));
+const server = app.listen(PORT, () => console.log(`Server listening on PORT ${(PORT.toString())}`));
 
 // set the 'Content-Type' that the middleware will parse
 app.use(express.json());
 
-// logger 
-app.use((req, res, next) => {
-  console.log(`${req.method.yellow} request at ${req.url.cyan}`);
-  console.log(req.body);
-  
+// logger
+app.use(({ body, method, url }, res, next) => {
+  console.log(`${method.yellow} request at ${colors.cyan(url)}`);
+  console.log(body);
+
   // next middleware
   next();
 });
 
+// serving static file
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 
+/* ==================================== HTTP request handlers =================================== */
 
-
-//=========================== HTTP request handlers ============================
-
-app.get('/:id', ({params: {id}}, res) => {
+app.get('/:id', ({ params: { id } }, res) => {
   Listings.findById(id)
-    .then(query => res.status(200).send(query))
-    .catch(err => res.status(500).send(err))
-})
+    .then((query) => res.status(200).send(query))
+    .catch((err) => res.status(500).send(err));
+});
+
+module.exports = {
+  server,
+};
