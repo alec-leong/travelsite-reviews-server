@@ -7,7 +7,9 @@ const {
   reviewSchema,
 } = require('../db/index.js');
 
+const { modelName } = Listings;
 const { expect } = chai;
+
 chai.use(chaiAsPromised);
 chai.should();
 
@@ -15,7 +17,7 @@ describe('#countDocuments()', () => {
   const count = 100;
 
   // test correct number of documents in collection
-  it(`expect '${Listings.modelName.yellow}' collection to have ${count.cyan} documents`, (done) => {
+  it(`expect '${modelName.yellow}' collection to have ${count.cyan} documents`, (done) => {
     Listings.countDocuments().should.eventually.equal(count);
     done(); // notify Mocha asynchronous test done
 
@@ -36,14 +38,14 @@ describe('Parent Schema', () => {
   const fields = Object.keys(parent);
 
   // test parent schema's fields
-  it(`expect '${Listings.modelName.yellow}' schema to have ${fields.join(', ').green} fields`, (done) => {
+  it(`expect '${modelName.yellow}' schema to have ${fields.join(', ').green} fields`, (done) => {
     Listings.findOne().should.eventually.have.all.keys(...fields); // spread syntax
     done();
   });
 
   // test parent schema's fields' data types
   Object.entries(parent).forEach(([field, { name }]) => {
-    it(`expect '${Listings.modelName.yellow}' schema '${field.green}' field to be of type ${name.cyan}`, () => {
+    it(`expect '${modelName.yellow}' schema '${field.green}' field to be of type ${name.cyan}`, () => {
       expect(listingsSchema.path(field).instance).to.equal(name);
     });
   });

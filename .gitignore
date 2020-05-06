@@ -1,5 +1,6 @@
 node_modules
 test/__snapshots__
 client/dist/bundle.js
+details
 package-lock.json
 temp.js
