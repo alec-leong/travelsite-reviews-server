@@ -24,10 +24,18 @@ class App extends Component {
   }
 
   // handleTravelerTypeChange
-  handleTravelerTypeChange(types) {
+  handleTravelerTypeChange(event) {
+    const { name, checked } = event.target; // destructuring
+    const index = event.target.getAttribute('index'); // index - A custom DOM attribute
+    const types = [...this.state.types]; // array copy
+
+    types[index] = {
+      [name]: checked,
+    };
+
     this.setState({
       types,
-    })
+    });
   }
 
   // initial
