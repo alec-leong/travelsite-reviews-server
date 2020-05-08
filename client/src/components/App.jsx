@@ -1,6 +1,8 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import ReviewList from './review/ReviewList';
-import axios from 'axios';
+import { types, times, languages } from '../helpers/reviewsGridConfig';
+import TravelerType from './TravelerType';
 
 // import Header from './Header';
 // import Languages from './Languages';
@@ -12,21 +14,36 @@ class App extends Component {
     super(props);
 
     this.state = {
+      types,
+      times,
+      languages,
       reviews: [],
     };
+
+    this.handleTravelerTypeChange = this.handleTravelerTypeChange.bind(this);
+  }
+
+  // handleTravelerTypeChange
+  handleTravelerTypeChange(types) {
+    this.setState({
+      types,
+    })
   }
 
   // initial
   componentDidMount() {
     axios.get('/reviews')
-      .then(res => this.setState({ reviews: res }))
+      .then(({ data }) => this.setState({ reviews: data }))
       .catch(console.error);
   }
 
   render() {
-    const { reviews } = this.state;
+    const { reviews, types } = this.state;
     return (
-      <ReviewList reviews={reviews} />
+      <div>
+        <TravelerType types={types} handleChange={this.handleTravelerTypeChange} />
+        <ReviewList reviews={reviews} />
+      </div>
     );
   }
 }

@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
 import { Label, P } from '../css/style';
 
-const data = [
-  { Families: false },
-  { Couples: false },
-  { Solo: false },
-  { Business: false },
-  { Friends: false },
-];
-
 class TravelerType extends Component {
   constructor(props) {
     // initialize props
     super(props);
 
+    // destructure
+    const { types } = this.props;
+
     // initialize state
     this.state = {
-      data,
+      types,
     };
 
     // bind
@@ -26,25 +21,27 @@ class TravelerType extends Component {
   handleInputCheckboxChange(event) {
     const { name, checked } = event.target; // destructuring
     const index = event.target.getAttribute('index'); // index - A custom DOM attribute
-    const data = [...this.state.data]; // array copy
+    const types = [...this.state.types]; // array copy
 
-    data[index] = {
+    types[index] = {
       [name]: checked,
     };
 
     this.setState({
-      data,
+      types,
     });
+
+    this.props.handleChange(types);
   }
 
   render() {
-    const { data } = this.state;
+    const { types } = this.state;
 
     return (
       <div>
         <P>Travel type</P>
         <form>
-          {data.map((month, i) => {
+          {types.map((month, i) => {
             const [key] = Object.keys(month);
 
             return (

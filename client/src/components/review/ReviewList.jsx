@@ -1,13 +1,12 @@
 import React from 'react';
 import { FullCircle } from '../../css/style';
-import { isPlural } from '../../helper/helper';
+import { isPlural } from '../../helpers/functions';
 import _ from 'underscore';
 
 
 const ReviewList = ({ reviews }) => (
   <div>
-    {reviews}
-    {/* {reviews.length !== 0
+    {reviews.length !== 0
       ?
         reviews.map(({ 
           _id,
@@ -18,7 +17,7 @@ const ReviewList = ({ reviews }) => (
           title,
           review,
           dateOfReview,
-          dateofTrip,
+          dateOfTrip,
           tripType,
           helpful 
         }) => (
@@ -34,14 +33,14 @@ const ReviewList = ({ reviews }) => (
             <p>{_.range(0, rating).map((val) => <span><FullCircle /> </span>)}</p>
             <p><b>{title}</b></p>
             <p>{review}</p>
-            <p><b>Date of experience: </b>{dateofTrip}</p>
+            <p><b>Date of experience: </b>{dateOfTrip}</p>
             <p>{helpful} helpful vote{isPlural(helpful)}</p>
             <p>&#x1F44D; Helpful &#x1F4E8;	Share</p>
             <hr />
           </div>
         ))
       : null 
-    } */}
+    }
   </div>
 );
 

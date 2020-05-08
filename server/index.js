@@ -40,14 +40,8 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get('/reviews', (req, res) => {
   Listings.findOne()
-    .then(query => {
-      console.log(query);
-      res.status(200).send(query);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).send(err);
-    })
+    .then(({ reviews }) => res.status(200).send(reviews))
+    .catch(err => res.status(500).send(err));
 });
 
 module.exports = {
