@@ -32,10 +32,22 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 /* ==================================== HTTP request handlers =================================== */
 
-app.get('/:id', ({ params: { id } }, res) => {
-  Listings.findById(id)
-    .then((query) => res.status(200).send(query))
-    .catch((err) => res.status(500).send(err));
+// app.get('/:id', ({ params: { id } }, res) => {
+//   Listings.findById(id)
+//     .then((query) => res.status(200).send(query))
+//     .catch((err) => res.status(500).send(err));
+// });
+
+app.get('/reviews', (req, res) => {
+  Listings.findOne()
+    .then(query => {
+      console.log(query);
+      res.status(200).send(query);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+    })
 });
 
 module.exports = {
