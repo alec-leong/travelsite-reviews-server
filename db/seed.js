@@ -46,7 +46,7 @@ const listings = _.range(0, 100).reduce((trips, listVal) => {
         title: faker.lorem.sentence(),
         review: faker.lorem.paragraph(),
         dateOfReview: `${months[index]} ${year}`,
-        dateofTrip: `${months[_.random(0, index)]} ${year}`,
+        dateOfTrip: `${months[_.random(0, index)]} ${year}`,
         tripType: tripType[_.random(0, tripType.length - 1)],
         helpful: _.random(1, 1000),
       });
