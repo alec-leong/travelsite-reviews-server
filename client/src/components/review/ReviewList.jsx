@@ -1,13 +1,15 @@
 import React from 'react';
-import { FullCircle } from '../../css/style';
-import { isPlural } from '../../helpers/functions';
 import _ from 'underscore';
+import { FullCircle } from '../../css/style';
+import { filterMonths, isPlural } from '../../helpers/functions';
 
 
-const ReviewList = ({ reviews }) => (
+const ReviewList = ({ reviews, times }) => (
   <div>
     {reviews.length !== 0
-      ?
+      ? 
+        (reviews = filterMonths(times, reviews),
+        console.log(reviews),
         reviews.map(({ 
           _id,
           username,
@@ -39,6 +41,7 @@ const ReviewList = ({ reviews }) => (
             <hr />
           </div>
         ))
+        )
       : null 
     }
   </div>

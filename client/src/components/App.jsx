@@ -1,13 +1,12 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import ReviewList from './review/ReviewList';
-import { types, times, languages } from '../helpers/reviewsGridConfig';
-import TravelerType from './TravelerType';
-
-// import Header from './Header';
+import Header from './Header';
 import Languages from './Languages';
+import ReviewList from './review/ReviewList';
 import TimeOfYear from './TimeOfYear';
-// import TravelerType from './TravelerType';
+import TravelerType from './TravelerType';
+import { types, times, languages } from '../helpers/reviewsGridConfig';
+
 
 class App extends Component {
   /**
@@ -58,7 +57,8 @@ class App extends Component {
     times[index] = {
       [name]: checked,
     };
-
+    
+    
     this.setState({
       times,
     });
@@ -85,8 +85,9 @@ class App extends Component {
     });
   }
 
-
-  // initial
+  /**
+   * Axios GET request - Initialize App's `reviews`
+   */
   componentDidMount() {
     axios.get('/reviews')
       .then(({ data }) => this.setState({ reviews: data }))
@@ -94,14 +95,19 @@ class App extends Component {
   }
 
 
+  /**
+   * Render
+   * @returns JSX element
+   */
   render() {
     const { languages, reviews, selectedLang, times, types } = this.state;
     return (
       <div>
+        <Header />
         <TravelerType types={types} handleChange={this.handleTravelerChange} />
         <TimeOfYear times={times} handleChange={this.handleTimeChange} />
         <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
-        <ReviewList reviews={reviews} />
+        <ReviewList reviews={reviews} times={times} />
       </div>
     );
   }
