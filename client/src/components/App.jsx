@@ -6,7 +6,7 @@ import TravelerType from './TravelerType';
 
 // import Header from './Header';
 // import Languages from './Languages';
-// import TimeOfYear from './TimeOfYear';
+import TimeOfYear from './TimeOfYear';
 // import TravelerType from './TravelerType';
 
 class App extends Component {
@@ -20,13 +20,38 @@ class App extends Component {
       reviews: [],
     };
 
-    this.handleTravelerTypeChange = this.handleTravelerTypeChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.handleTravelerChange = this.handleTravelerChange.bind(this);
   }
 
-  // handleTravelerTypeChange
-  handleTravelerTypeChange(event) {
+  /**
+   * Handle change in TravelerType's `props`
+   * @param {Object} event - The `Event` interface; a reference to the object onto which the event
+   *                         was dispatched.
+   */
+  handleTimeChange(event) {
     const { name, checked } = event.target; // destructuring
     const index = event.target.getAttribute('index'); // index - A custom DOM attribute
+    const times = [...this.state.times]; // array copy
+
+    times[index] = {
+      [name]: checked,
+    };
+
+    this.setState({
+      times,
+    });
+  }
+
+  /**
+   * Handle change in TravelerType's `props`
+   * @param {Object} event - The `Event` interface; a reference to the object onto which the event
+   *                         was dispatched.
+   */
+  handleTravelerChange(event) {
+    const { name, checked } = event.target; // `name` - A native DOM attribute
+                                            // `checked` - A native DOM attribute
+    const index = event.target.getAttribute('index'); // `index` - A custom DOM attribute
     const types = [...this.state.types]; // array copy
 
     types[index] = {
@@ -46,10 +71,11 @@ class App extends Component {
   }
 
   render() {
-    const { reviews, types } = this.state;
+    const { reviews, times, types } = this.state;
     return (
       <div>
-        <TravelerType types={types} handleChange={this.handleTravelerTypeChange} />
+        <TravelerType types={types} handleChange={this.handleTravelerChange} />
+        <TimeOfYear times={times} handleChange={this.handleTimeChange} />
         <ReviewList reviews={reviews} />
       </div>
     );
