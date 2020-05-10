@@ -24,7 +24,7 @@ class App extends Component {
       types,
       languages,
       selectedLang: '',
-      search: 'Search reviews',
+      search: '',
       reviews: [],
     };
 
@@ -75,10 +75,10 @@ class App extends Component {
 
 
   handleSearchChange(event) {
-    const { name, value } = event.target; 
+    const { name, value } = event.target; // {String} `name` - A native DOM attr; equals to 'search'
 
     this.setState({
-      [name]: value,
+      [name]: value, // 'search': value
     });
   }
 
@@ -86,7 +86,6 @@ class App extends Component {
   // this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   handleSearchSubmit(event) {
     event.preventDefault();
-
   }
 
 
@@ -164,7 +163,7 @@ class App extends Component {
    * @returns JSX element
    */
   render() {
-    const { languages, ratings, reviews, selectedLang, times, types } = this.state;
+    const { languages, ratings, reviews, search, selectedLang, times, types } = this.state;
     return (
       <div>
         <Header />
@@ -172,7 +171,7 @@ class App extends Component {
         <TravelerType types={types} handleChange={this.handleTravelerChange} />
         <TimeOfYear times={times} handleChange={this.handleTimeChange} />
         <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
-        <Search />
+        <Search search={search} handleChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit} />
         <ReviewList ratings={ratings} reviews={reviews} times={times} types={types} handleChange={this.updateHelpful} />
       </div>
     );
