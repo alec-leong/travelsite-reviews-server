@@ -44,6 +44,21 @@ app.get('/reviews', (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
+app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
+  // console.log(_id);
+  // res.status(200).send('PUT resolved')
+
+  Listings.findOne()
+  .then(res => {
+    const doc = res;
+    doc.reviews.id(_id).helpful++;
+    return Listings.findByIdAndUpdate({ _id: _id[0] }, new Listings(doc));
+  })
+  .then(() => Listings.findOne())
+  .then(({ reviews }) => res.status(200).send(reviews)) // update
+  .catch(err => res.status(500).send(err));
+});
+
 module.exports = {
   server,
 };

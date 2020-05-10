@@ -4,7 +4,7 @@ import { FullCircle } from '../../css/style';
 import { /* filterMonths, filterRatings, filterTypes, */ filterAll, isPlural } from '../../helpers/functions';
 
 
-const ReviewList = ({ ratings, reviews, times, types }) => (
+const ReviewList = ({ handleChange, ratings, reviews, times, types }) => (
   <div>
     {reviews.length !== 0
       ? 
@@ -41,7 +41,7 @@ const ReviewList = ({ ratings, reviews, times, types }) => (
             <p><b>Date of experience: </b>{dateOfTrip}</p>
             <p><b>Trip Type: </b>{tripType}</p>
             <p>{helpful} helpful vote{isPlural(helpful)}</p>
-            <p>&#x1F44D; Helpful &#x1F4E8;	Share</p>
+            <p><button id={_id} onClick={handleChange}>&#x1F44D;</button> Helpful &#x1F4E8;	Share</p> {/* _id="Number, Number" - First # is listing ID; Second # is review ID */}
             <hr />
           </div>
         ))

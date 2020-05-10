@@ -30,8 +30,22 @@ class App extends Component {
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleTravelerChange = this.handleTravelerChange.bind(this);
+    this.updateHelpful = this.updateHelpful.bind(this);
   }
 
+  /**
+   * PUT request - update `helpful` count for a review
+   * @param {Object} event - The `Event` interface; a reference to then object onto which the event
+   *                         was dispatched.
+   */
+  updateHelpful(event) {
+    const { id } = event.target; // {String} `id` - e.g. '2,1' where '2' listing ID; '1' review ID
+    const _id = id.split(',').map(num => Number.parseInt(num)); // {Array} `_id` - e.g. [2, 1]
+
+    axios.put('/reviews', { _id })
+      .then(({ data: reviews }) => this.setState({ reviews }))
+      .catch(console.error);
+  }
 
   /**
    * Handle change in Languages' `props`
@@ -109,7 +123,7 @@ class App extends Component {
    */
   componentDidMount() {
     axios.get('/reviews')
-      .then(({ data }) => this.setState({ reviews: data }))
+      .then(({ data: reviews }) => this.setState({ reviews }))
       .catch(console.error);
   }
 
@@ -127,7 +141,7 @@ class App extends Component {
         <TravelerType types={types} handleChange={this.handleTravelerChange} />
         <TimeOfYear times={times} handleChange={this.handleTimeChange} />
         <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
-        <ReviewList ratings={ratings} reviews={reviews} times={times} types={types} />
+        <ReviewList ratings={ratings} reviews={reviews} times={times} types={types} handleChange={this.updateHelpful} />
       </div>
     );
   }
