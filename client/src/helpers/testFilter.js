@@ -190,8 +190,8 @@ const regexMonths = new RegExp(selectedMonths.reduce((accum, month, index) => {
   return accum;
 }, '('));
 
-console.log(selectedMonths);
-console.log(regexMonths);
+// console.log(selectedMonths);
+// console.log(regexMonths);
 
 const types = [
   { Families: false },
@@ -215,10 +215,40 @@ const regexTypes = selectedTypes.reduce((accum, type, index) => {
   return accum;
 }, '(')
 
-console.log(regexTypes)
+// console.log(regexTypes)
 
 // const oct = 'October';
 // const jan = 'January';
 // const regex = new RegExp(`(${oct}.*|${jan}.*)`);
 // const result = reviews.filter(review => regex.test(review.dateOfTrip));
 // console.log(result);
+
+const ratings = [
+  { Excellent: true },
+  { 'Very Good': false }, 
+  { Average: true },
+  { Poor: false }, 
+  { Terrible: true },
+];
+
+const max = 5; 
+
+const selectedRatings = ratings.reduce((accum, rate, index) => {
+  const [key] = Object.keys(rate);
+
+  rate[key] ? accum.push(max - index) : false;
+
+  return accum;
+}, []);
+
+const regexRatings = new RegExp(selectedRatings.reduce((accum, rate, index) => {
+  index !== selectedRatings.length - 1 ? accum += `${rate}|` : accum += `${rate})`;
+
+  return accum;
+}, '('));
+
+console.log(selectedRatings);
+console.log(regexRatings);
+
+const results = reviews.filter(({ rating }) => regexRatings.test(rating));
+console.log(results); 

@@ -2,10 +2,11 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import Header from './Header';
 import Languages from './Languages';
+import Ratings from './Ratings';
 import ReviewList from './review/ReviewList';
 import TimeOfYear from './TimeOfYear';
 import TravelerType from './TravelerType';
-import { types, times, languages } from '../helpers/reviewsGridConfig';
+import { ratings, types, times, languages } from '../helpers/reviewsGridConfig';
 
 
 class App extends Component {
@@ -17,14 +18,16 @@ class App extends Component {
     super(props); // Sets `this.props`. Otherwise, when accessing `this.props`, would be `undefined`
 
     this.state = {
-      types,
+      ratings,
       times,
+      types,
       languages,
       selectedLang: '',
       reviews: [],
     };
 
     this.handleLangChange = this.handleLangChange.bind(this);
+    this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleTravelerChange = this.handleTravelerChange.bind(this);
   }
@@ -40,6 +43,22 @@ class App extends Component {
   handleLangChange({ target: { name: selectedLang } }) {
     this.setState({
       selectedLang,
+    });
+  }
+
+
+  handleRatingChange(event) {
+    const { name, checked } = event.target; // destructuring
+    const index = event.target.getAttribute('index'); // index - A custom DOM attribute
+    const ratings = [...this.state.ratings]; // array copy
+
+    ratings[index] = {
+      [name]: checked,
+    };
+    
+    
+    this.setState({
+      ratings,
     });
   }
 
@@ -100,14 +119,15 @@ class App extends Component {
    * @returns JSX element
    */
   render() {
-    const { languages, reviews, selectedLang, times, types } = this.state;
+    const { languages, ratings, reviews, selectedLang, times, types } = this.state;
     return (
       <div>
         <Header />
+        <Ratings ratings={ratings} handleChange={this.handleRatingChange} />
         <TravelerType types={types} handleChange={this.handleTravelerChange} />
         <TimeOfYear times={times} handleChange={this.handleTimeChange} />
         <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
-        <ReviewList reviews={reviews} times={times} />
+        <ReviewList ratings={ratings} reviews={reviews} times={times} types={types} />
       </div>
     );
   }

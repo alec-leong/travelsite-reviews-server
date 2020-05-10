@@ -1,15 +1,18 @@
 import React from 'react';
 import _ from 'underscore';
 import { FullCircle } from '../../css/style';
-import { filterMonths, isPlural } from '../../helpers/functions';
+import { /* filterMonths, filterRatings, filterTypes, */ filterAll, isPlural } from '../../helpers/functions';
 
 
-const ReviewList = ({ reviews, times }) => (
+const ReviewList = ({ ratings, reviews, times, types }) => (
   <div>
     {reviews.length !== 0
       ? 
-        (reviews = filterMonths(times, reviews),
-        console.log(reviews),
+        (reviews = filterAll(reviews, ratings, times, types),
+        // reviews = filterMonths(times, reviews),
+        // reviews = filterTypes(types, reviews),
+        // reviews = filterRatings(ratings, reviews),
+        // console.log(reviews),
         reviews.map(({ 
           _id,
           username,
@@ -36,6 +39,7 @@ const ReviewList = ({ reviews, times }) => (
             <p><b>{title}</b></p>
             <p>{review}</p>
             <p><b>Date of experience: </b>{dateOfTrip}</p>
+            <p><b>Trip Type: </b>{tripType}</p>
             <p>{helpful} helpful vote{isPlural(helpful)}</p>
             <p>&#x1F44D; Helpful &#x1F4E8;	Share</p>
             <hr />
