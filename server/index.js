@@ -1,5 +1,4 @@
 const colors = require('colors');
-const cors = require('cors');
 const express = require('express');
 const path = require('path');
 const { Listings } = require('../db/index.js');
@@ -14,9 +13,6 @@ const PORT = 3000;
 
 // listen
 const server = app.listen(PORT, () => console.log(`Server listening on PORT ${(PORT.toString())}`));
-
-// cors 
-app.use(cors({origin: true, credentials: true}));
 
 // set the 'Content-Type' that the middleware will parse
 app.use(express.json());

@@ -13,7 +13,7 @@ const httpTerminator = createHttpTerminator({ server });
 describe('GET /id', () => {
   let id;
 
-  // set id before testing
+  // set `id` before testing
   beforeAll(() => {
     id = 0;
   });

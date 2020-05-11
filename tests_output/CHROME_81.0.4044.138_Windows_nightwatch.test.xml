@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites errors="0"
-            failures="0"
+<testsuites errors="1"
+            failures="1"
             tests="1">
 
   <testsuite name="nightwatch.test"
-    errors="0" failures="0" hostname="" id="" package="nightwatch.test" skipped="0"
-    tests="1" time="0.7810" timestamp="">
+    errors="1" failures="1" hostname="" id="" package="nightwatch.test" skipped="0"
+    tests="1" time="9.739" timestamp="">
   
-    <testcase name="Demo test localhost:3000" classname="nightwatch.test" time="0.7810" assertions="3">
+    <testcase name="Demo test localhost:3000" classname="nightwatch.test" time="9.739" assertions="2">
+
+      <failure message="Testing if element [0;33m&lt;input[type=search]&gt;[0m is visible in 5000ms - expected [0;32m&#34;is visible&#34;[0m but got: [0;31m&#34;element could not be located&#34;[0m [0;90m(5215ms)[0m">    at Object.Demo test localhost:3000 (C:\Users\leong\Desktop\FIX GITHUB\tripadvisor-reviews-server\test\nightwatch.test.js:6:15)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)</failure>
 
     
-
-    
-
+      <failure message="    at Object.Demo test localhost:3000 (C:\Users\leong\Desktop\FIX GITHUB\tripadvisor-reviews-server\test\nightwatch.test.js:6:15)">    at processTicksAndRejections (internal/process/task_queues.js:97:5)</failure>
+      <error message="Error while running &#34;visible&#34; command: Testing if element [0;33m&lt;input[type=search]&gt;[0m is visible in 5000ms - expected [0;32m&#34;is visible&#34;[0m but got: [0;31m&#34;element could not be located&#34;[0m [0;90m(5215ms)[0m" type="error">    at processTicksAndRejections (internal/process/task_queues.js:97:5)</error>
     
     </testcase>
   
 
+  
+    <system-err>
+      [0;31m  NoSuchElementError: An error occurred while running .isVisible() command on &lt;input[type=search]&gt;: undefined; undefined
+   {&#34;sessionId&#34;:&#34;4585ad7dc09d3b1ae4866bff010ad714&#34;,&#34;status&#34;:0,&#34;value&#34;:[]}[0m
+[0;90m       at processTicksAndRejections (internal/process/task_queues.js:97:5)[0m
+    </system-err>
   
 
   

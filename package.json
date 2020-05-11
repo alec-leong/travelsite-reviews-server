@@ -11,7 +11,7 @@
     "seed-test": "jest --env=node --forceExit test/seed.test.js",
     "server-test": "jest --env=node --forceExit test/server.test.js",
     "start": "nodemon server/index.js",
-    "test": "jest --env=node --forceExit test/seed.test.js && jest --env=node --forceExit test/server.test.js && jest test/App.test.jsx",
+    "test": "jest --env=node --forceExit test/seed.test.js && jest --env=node --forceExit test/server.test.js && jest --forceExit test/App.test.jsx && gnome-terminal && npm start && node nightwatch.js test/nightwatch.test.js -e chrome",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
@@ -30,7 +30,6 @@
     "bluebird": "^3.7.2",
     "chai-as-promised": "^7.1.1",
     "colors": "^1.4.0",
-    "cors": "^2.8.5",
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "http-terminator": "^2.0.3",

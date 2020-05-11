@@ -1,11 +1,19 @@
+const { server } = require('../server/index.js'); 
+const { _connectionKey } = server;
+const PORT = _connectionKey.split(':').pop(); 
+const key = `Demo test localhost:${PORT}`;
+
+// end-to-end test for `Search` component
 module.exports = {
-  'Demo test localhost:3000': (client) => {
+  [key]: (client) => {
     client
-      .url('http://localhost:3000')
+      .url(`http://localhost:${PORT}`)
       .waitForElementVisible('body')
       .assert.visible('input[type=search]')
+      // .pause(1000)
       .setValue('input[type=search]', 'fugit')
+      .pause(3000)
       .assert.containsText('.review', 'fugit')
-      .end()
+      .end(() => process.exit())
   },
 };
