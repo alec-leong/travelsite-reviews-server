@@ -6,7 +6,7 @@
   "scripts": {
     "api": "node client/clientGetReq.js",
     "react-dev": "webpack -d --watch",
-    "react-test": "jest test/App.test.jsx",
+    "react-test": "jest --forceExit test/App.test.jsx",
     "seed": "node db/seed.js",
     "seed-test": "jest --env=node --forceExit test/seed.test.js",
     "server-test": "jest --env=node --forceExit test/server.test.js",
@@ -30,6 +30,7 @@
     "bluebird": "^3.7.2",
     "chai-as-promised": "^7.1.1",
     "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "http-terminator": "^2.0.3",

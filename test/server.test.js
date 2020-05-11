@@ -24,7 +24,7 @@ describe('GET /id', () => {
   });
 
   test('responds with json', (done) => request(server)
-    .get(`/${id}`)
+    .get(`/reviews/${id}`)
     .expect('Content-Type', /json/)
     .expect(200, done));
 });

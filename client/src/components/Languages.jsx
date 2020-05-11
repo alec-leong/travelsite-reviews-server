@@ -2,7 +2,7 @@ import React from 'react';
 import { Label, P, Span } from '../css/style';
 
 const Languages = ({ languages, selected, handleChange }) => (
-  <form>
+  <form className="language">
     <P>Language</P>
     {languages.map((lang, i) => {
       const [key] = Object.keys(lang);

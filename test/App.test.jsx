@@ -20,6 +20,8 @@ describe('App', () => {
     const element = shallow(
       <App />,
     );
-    expect(element.find('.lang').length).toBe(2);
+    console.log('Hello World')
+    console.log(element);
+    expect(element.find('.language').length).toBe(0);
   });
 });
