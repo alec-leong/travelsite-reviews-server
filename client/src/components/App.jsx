@@ -172,7 +172,7 @@ class App extends Component {
         <TimeOfYear times={times} handleChange={this.handleTimeChange} />
         <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
         <Search search={search} handleChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit} />
-        <ReviewList ratings={ratings} reviews={reviews} times={times} types={types} handleChange={this.updateHelpful} />
+        <ReviewList ratings={ratings} reviews={reviews} target={search} times={times} types={types} handleChange={this.updateHelpful} />
       </div>
     );
   }

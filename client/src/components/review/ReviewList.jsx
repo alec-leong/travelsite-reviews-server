@@ -1,14 +1,15 @@
 import React from 'react';
 import _ from 'underscore';
 import { FullCircle } from '../../css/style';
-import { /* filterMonths, filterRatings, filterTypes, */ filterAll, isPlural } from '../../helpers/functions';
+import { /* filterMonths, filterRatings, filterTypes, */ filterAll, filterSearch, isPlural } from '../../helpers/functions';
 
 
-const ReviewList = ({ handleChange, ratings, reviews, times, types }) => (
+const ReviewList = ({ handleChange, ratings, reviews, target, times, types }) => (
   <div>
     {reviews.length !== 0
       ? 
         (reviews = filterAll(reviews, ratings, times, types),
+        reviews = filterSearch(target, reviews),
         // reviews = filterMonths(times, reviews),
         // reviews = filterTypes(types, reviews),
         // reviews = filterRatings(ratings, reviews),

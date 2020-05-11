@@ -1,3 +1,5 @@
+const _ = require('underscore');
+
 const reviews = [
   {
       "_id": [
@@ -247,8 +249,43 @@ const regexRatings = new RegExp(selectedRatings.reduce((accum, rate, index) => {
   return accum;
 }, '('));
 
-console.log(selectedRatings);
-console.log(regexRatings);
+// console.log(selectedRatings);
+// console.log(regexRatings);
 
-const results = reviews.filter(({ rating }) => regexRatings.test(rating));
-console.log(results); 
+// const results = reviews.filter(({ rating }) => regexRatings.test(rating));
+// console.log(results); 
+
+console.log('====================================================================================');
+
+// const query = '\n\t Said\t The\n s  k y s'; 
+const query = 'fugit voluptatum voluptatem';
+const words = query.toLowerCase().trim().split(/\s+/);
+const uniqueWords =  _.unique(words);
+console.log(uniqueWords);
+
+const result = reviews.filter((review) => {
+  for (let word of uniqueWords) {
+    if (review.review.toLowerCase().includes(word)) {
+      return review; 
+    }
+  }
+}); 
+console.log(result)
+console.log(result.length)
+// console.log(...[1, 2, 3].map(num => num * 2));
+
+// const res = words.map((word) => {
+//   return reviews.filter(({ review }) => review.toLowerCase().includes(word)); 
+// });
+
+// console.log(...res);
+// console.log(res.length)
+
+// null 
+// undefined
+// 0
+// false
+// ''
+// NaN
+const str = ''; 
+console.log(`Trim: ${str.trim().length}`)

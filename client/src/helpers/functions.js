@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 /**
  * Determine if `field` is a plural.
  * @param {Number} field - The `field`
@@ -97,6 +99,33 @@ const filterRatings = (ratings, reviews) => {
 }
 
 
+const filterSearch = (target, reviews) => {
+  const uniqueWords = _.uniq(target.toLowerCase().trim().split(/\s+/));
+
+  return uniqueWords.length 
+    ? reviews.filter((review) => {
+        for (let word of uniqueWords) {
+          if (review.review.toLowerCase().includes(word)) {
+            return review; 
+          }
+        }
+      })
+    : reviews;
+
+  // if (uniqueWords.length) {
+  //   return reviews.filter((review) => {
+  //     for (let word of uniqueWords) {
+  //       if (review.review.toLowerCase().includes(word)) {
+  //         return review; 
+  //       }
+  //     }
+  //   }); 
+  // }
+
+  // return reviews;
+}
+
+
 /**
  * Travel type filter.
  * @param {Array} types - An array of objects; each key is a trip type and value is a boolean.
@@ -116,7 +145,7 @@ const filterTypes = (types, reviews) => {
   if (selectedTypes.length) {
     regexTypes = new RegExp(selectedTypes.reduce((accum, type, index) => {
       // handle Family (young children) or Family (teens)
-      type = type === 'Families' ? 'Family.*': type;
+      type = type === 'Families' ? 'Family.*' : type;
       
       index !== selectedTypes.length - 1 ? accum += `${type}|` : accum += `${type})`;
     
@@ -134,6 +163,7 @@ export {
   isPlural,
   filterAll,
   filterMonths,
+  filterSearch,
   filterRatings,
   filterTypes,
 }
