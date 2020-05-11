@@ -160,8 +160,8 @@ const reviews = [
       "dateOfTrip": "October 2019",
       "tripType": "Solo",
       "helpful": 509
-  }
-]; 
+  },
+];
 
 
 const times = [
@@ -204,7 +204,7 @@ const types = [
 ];
 
 const selectedTypes = types.reduce((accum, type) => {
-  const [key] = Object.keys(type); 
+  const [key] = Object.keys(type);
 
   type[key] ? accum.push(key) : null;
 
@@ -215,7 +215,7 @@ const regexTypes = selectedTypes.reduce((accum, type, index) => {
   index !== selectedTypes.length - 1 ? accum += `${type}|` : accum += `${type})`;
 
   return accum;
-}, '(')
+}, '(');
 
 // console.log(regexTypes)
 
@@ -227,13 +227,13 @@ const regexTypes = selectedTypes.reduce((accum, type, index) => {
 
 const ratings = [
   { Excellent: true },
-  { 'Very Good': false }, 
+  { 'Very Good': false },
   { Average: true },
-  { Poor: false }, 
+  { Poor: false },
   { Terrible: true },
 ];
 
-const max = 5; 
+const max = 5;
 
 const selectedRatings = ratings.reduce((accum, rate, index) => {
   const [key] = Object.keys(rate);
@@ -253,14 +253,14 @@ const regexRatings = new RegExp(selectedRatings.reduce((accum, rate, index) => {
 // console.log(regexRatings);
 
 // const results = reviews.filter(({ rating }) => regexRatings.test(rating));
-// console.log(results); 
+// console.log(results);
 
 console.log('====================================================================================');
 
 // const query = '\n\t Said\t The\n s  k y s'; 
 const query = 'fugit voluptatum voluptatem';
 const words = query.toLowerCase().trim().split(/\s+/);
-const uniqueWords =  _.unique(words);
+const uniqueWords = _.unique(words);
 console.log(uniqueWords);
 
 const result = reviews.filter((review) => {
@@ -269,9 +269,9 @@ const result = reviews.filter((review) => {
       return review; 
     }
   }
-}); 
-console.log(result)
-console.log(result.length)
+});
+console.log(result);
+console.log(result.length);
 // console.log(...[1, 2, 3].map(num => num * 2));
 
 // const res = words.map((word) => {
@@ -281,11 +281,11 @@ console.log(result.length)
 // console.log(...res);
 // console.log(res.length)
 
-// null 
+// null
 // undefined
 // 0
 // false
 // ''
 // NaN
-const str = ''; 
-console.log(`Trim: ${str.trim().length}`)
+const str = '';
+console.log(`Trim: ${str.trim().length}`);

@@ -1,22 +1,3 @@
-#langHeader {
-  font-family: 'Trip Sans', Arial, sans-serif !important;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgb(0, 10, 18);
-}
-
-.lang {
-  font-family: 'Trip Sans', Arial, sans-serif !important;
-  font-size: 14px;
-  color: rgb(0, 0, 0)
-}
-
-.langCount {
-  font-family: 'Trip Sans', Arial, sans-serif !important;
-  font-size: 14px;
-  color: rgb(118, 118, 118);
-}
-
 body {
   background-color: #ececec;
 }

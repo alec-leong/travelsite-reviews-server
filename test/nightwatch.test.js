@@ -1,6 +1,7 @@
-const { server } = require('../server/index.js'); 
+const { server } = require('../server/index.js');
+
 const { _connectionKey } = server;
-const PORT = _connectionKey.split(':').pop(); 
+const PORT = _connectionKey.split(':').pop();
 const key = `Demo test localhost:${PORT}`;
 
 // end-to-end test for `Search` component
@@ -14,6 +15,6 @@ module.exports = {
       .setValue('input[type=search]', 'fugit')
       .pause(3000)
       .assert.containsText('.review', 'fugit')
-      .end(() => process.exit())
+      .end(() => process.exit());
   },
 };

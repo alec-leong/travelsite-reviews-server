@@ -9,11 +9,11 @@ const isPlural = (field) => field > 1 ? 's' : '';
 
 
 /**
- * 
- * @param {Array} reviews 
- * @param {Array} ratings 
- * @param {Array} times 
- * @param {Array} types 
+ *
+ * @param {Array} reviews
+ * @param {Array} ratings
+ * @param {Array} times
+ * @param {Array} types
  */
 const filterAll = (reviews, ratings, times, types) => {
   reviews = filterMonths(times, reviews);
@@ -21,13 +21,13 @@ const filterAll = (reviews, ratings, times, types) => {
   reviews = filterTypes(types, reviews);
 
   return reviews;
-}; 
+};
 
 
 // `months` is used in `filterMonths( )`
 const months = [
   { 'Mar-May': ['March', 'April', 'May'] },
-  { 'Jun-Aug': ['June', 'July', 'August' ]},
+  { 'Jun-Aug': ['June', 'July', 'August'] },
   { 'Sep-Nov': ['September', 'October', 'November'] },
   { 'Dec-Feb': ['December', 'January', 'February'] },
 ];
@@ -43,18 +43,18 @@ const filterMonths = (times, reviews) => {
   // get the months, e.g. if { 'Jun-Aug': true } then selectedMonths = [ 'June', 'July', 'August']
   const selectedMonths = times.reduce((accum, time, index) => {
     const [key] = Object.keys(time);
-  
+
     time[key] ? accum.push(...months[index][key]) : false;
-  
+
     return accum;
   }, []);
 
   // create the regular expression, e.g. /(June.*|July.*|August.*)/
-  let regexMonths; 
+  let regexMonths;
   if (selectedMonths.length) {
     regexMonths = new RegExp(selectedMonths.reduce((accum, month, index) => {
       index !== selectedMonths.length - 1 ? accum += `${month}.*|` : accum += `${month}.*)`;
-    
+
       return accum;
     }, '('));
   } else {
@@ -67,7 +67,7 @@ const filterMonths = (times, reviews) => {
 
 
 // `max` is used in `filterRatings( )`
-const max = 5; 
+const max = 5;
 
 /**
  * Ratings filter.
@@ -78,35 +78,35 @@ const max = 5;
 const filterRatings = (ratings, reviews) => {
   const selectedRatings = ratings.reduce((accum, rate, index) => {
     const [key] = Object.keys(rate);
-  
+
     rate[key] ? accum.push(max - index) : false;
-  
+
     return accum;
   }, []);
 
-  let regexRatings; 
+  let regexRatings;
   if (selectedRatings.length) {
-    regexRatings = new RegExp(selectedRatings.reduce((accum, type, index) => {      
+    regexRatings = new RegExp(selectedRatings.reduce((accum, type, index) => {
       index !== selectedRatings.length - 1 ? accum += `${type}|` : accum += `${type})`;
-    
+
       return accum;
     }, '('));
   } else {
     return reviews;
   }
-  
+
   return reviews.filter(({ rating }) => regexRatings.test(rating));
-}
+};
 
 
 const filterSearch = (target, reviews) => {
   const uniqueWords = _.uniq(target.toLowerCase().trim().split(/\s+/));
 
-  return uniqueWords.length 
+  return uniqueWords.length
     ? reviews.filter((review) => {
         for (let word of uniqueWords) {
           if (review.review.toLowerCase().includes(word)) {
-            return review; 
+            return review;
           }
         }
       })
@@ -116,14 +116,14 @@ const filterSearch = (target, reviews) => {
   //   return reviews.filter((review) => {
   //     for (let word of uniqueWords) {
   //       if (review.review.toLowerCase().includes(word)) {
-  //         return review; 
+  //         return review;
   //       }
   //     }
-  //   }); 
+  //   });
   // }
 
   // return reviews;
-}
+};
 
 
 /**
@@ -134,27 +134,27 @@ const filterSearch = (target, reviews) => {
  */
 const filterTypes = (types, reviews) => {
   const selectedTypes = types.reduce((accum, type) => {
-    const [key] = Object.keys(type); 
-  
+    const [key] = Object.keys(type);
+
     type[key] ? accum.push(key) : null;
-  
+
     return accum;
   }, []);
 
-  let regexTypes; 
+  let regexTypes;
   if (selectedTypes.length) {
     regexTypes = new RegExp(selectedTypes.reduce((accum, type, index) => {
       // handle Family (young children) or Family (teens)
       type = type === 'Families' ? 'Family.*' : type;
-      
+
       index !== selectedTypes.length - 1 ? accum += `${type}|` : accum += `${type})`;
-    
+
       return accum;
     }, '('));
   } else {
     return reviews;
   }
-  
+
   return reviews.filter(({ tripType }) => regexTypes.test(tripType));
 };
 
@@ -166,4 +166,4 @@ export {
   filterSearch,
   filterRatings,
   filterTypes,
-}
+};

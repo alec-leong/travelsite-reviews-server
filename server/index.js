@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 /* ==================================== HTTP request handlers =================================== */
 
-// for '../test/server.test.js' 
+// for '../test/server.test.js'
 app.get('/reviews/:id', ({ params: { id } }, res) => {
   Listings.findById(id)
     .then((query) => res.status(200).send(query))
@@ -42,7 +42,7 @@ app.get('/reviews/:id', ({ params: { id } }, res) => {
 app.get('/reviews', (req, res) => {
   Listings.findOne()
     .then(({ reviews }) => res.status(200).send(reviews))
-    .catch(err => res.status(500).send(err));
+    .catch((err) => res.status(500).send(err));
 });
 
 app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
@@ -50,14 +50,14 @@ app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
   // res.status(200).send('PUT resolved')
 
   Listings.findOne()
-  .then(res => {
-    const doc = res;
-    doc.reviews.id(_id).helpful++;
-    return Listings.findByIdAndUpdate({ _id: _id[0] }, new Listings(doc));
-  })
-  .then(() => Listings.findOne())
-  .then(({ reviews }) => res.status(200).send(reviews)) // update
-  .catch(err => res.status(500).send(err));
+    .then((query) => {
+      const doc = query;
+      doc.reviews.id(_id).helpful += 1;
+      return Listings.findByIdAndUpdate({ _id: _id[0] }, new Listings(doc));
+    })
+    .then(() => Listings.findOne())
+    .then(({ reviews }) => res.status(200).send(reviews)) // update
+    .catch((err) => res.status(500).send(err));
 });
 
 module.exports = {

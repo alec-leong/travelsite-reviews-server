@@ -11,7 +11,7 @@ const review = {
   dateOfReview: 'December 2019',
   dateOfTrip: 'October 2019',
   tripType: 'Friends',
-  helpful: 481
+  helpful: 481,
 };
 
 const times = [
@@ -26,15 +26,16 @@ times.map((time, index) => {
 
   time[key]; // array of 3 months
 
-}); 
+});
 
 const months = [
   'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
   'November', 'December',
 ];
 
-Listings.findOne({'reviews.dateOfTrip': 'October 2019'})
+Listings.findOne({ 'reviews.dateOfTrip': 'October 2019' })
   .then(console.log)
   .catch(console.error)
   .finally(() => connection.close());
-  // $or: [{ dateOfTrip: { $regex: /September/ } }, { dateOfTrip: { $regex: /October/ } }, { dateOfTrip: { $regex: /November/ } }]
+
+// $or: [{ dateOfTrip: { $regex: /September/ } }, { dateOfTrip: { $regex: /October/ } }, { dateOfTrip: { $regex: /November/ } }]

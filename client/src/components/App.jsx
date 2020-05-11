@@ -8,7 +8,12 @@ import Search from './Search';
 import TimeOfYear from './TimeOfYear';
 import TravelerType from './TravelerType';
 import { ReviewsBox } from '../css/style';
-import { ratings, types, times, languages } from '../helpers/reviewsGridConfig';
+import {
+  languages,
+  ratings,
+  times,
+  types,
+} from '../helpers/reviewsGridConfig';
 
 
 class App extends Component {
@@ -40,6 +45,15 @@ class App extends Component {
 
 
   /**
+   * Axios GET request - Initialize App's `reviews`
+   */
+  componentDidMount() {
+    axios.get('/reviews')
+      .then(({ data: reviews }) => this.setState({ reviews }))
+      .catch(console.error);
+  }
+
+  /**
    * Handle change in Languages' `props`
    * @param {Object} target - The `target` property of the `Event` interface is a reference to the
    *                          object onto which the event was dispatched.
@@ -59,16 +73,17 @@ class App extends Component {
    *                         was dispatched.
    */
   handleRatingChange(event) {
-    const { name, checked } = event.target; // {String} `name` - A native DOM attribute
-                                            // {Boolean} `checked` - A native DOM attribute
+    // {String} `name` - A native DOM attribute
+    // {Boolean} `checked` - A native DOM attribute
+    const { name, checked } = event.target;
     const index = event.target.getAttribute('index'); // {String} `index` - A custom DOM attribute
     const ratings = [...this.state.ratings]; // array copy
 
     ratings[index] = {
       [name]: checked,
     };
-    
-    
+
+
     this.setState({
       ratings,
     });
@@ -84,7 +99,6 @@ class App extends Component {
   }
 
 
-  // this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   handleSearchSubmit(event) {
     event.preventDefault();
   }
@@ -96,16 +110,17 @@ class App extends Component {
    *                         was dispatched.
    */
   handleTimeChange(event) {
-    const { name, checked } = event.target; // {String} `name` - A native DOM attribute
-                                            // {Boolean} `checked` - A native DOM attribute
+    // {String} `name` - A native DOM attribute
+    // {Boolean} `checked` - A native DOM attribute
+    const { name, checked } = event.target;
     const index = event.target.getAttribute('index'); // {String} `index` - A custom DOM attribute
     const times = [...this.state.times]; // array copy
 
     times[index] = {
       [name]: checked,
     };
-    
-    
+
+
     this.setState({
       times,
     });
@@ -118,8 +133,9 @@ class App extends Component {
    *                         was dispatched.
    */
   handleTravelerChange(event) {
-    const { name, checked } = event.target; // {String} `name` - A native DOM attribute
-                                            // {Boolean} `checked` - A native DOM attribute
+    // {String} `name` - A native DOM attribute
+    // {Boolean} `checked` - A native DOM attribute
+    const { name, checked } = event.target;
     const index = event.target.getAttribute('index'); // {String} `index` - A custom DOM attribute
     const types = [...this.state.types]; // array copy
 
@@ -141,19 +157,9 @@ class App extends Component {
    */
   updateHelpful(event) {
     const { id } = event.target; // {String} `id` - e.g. '2,1' where '2' listing ID; '1' review ID
-    const _id = id.split(',').map(num => Number.parseInt(num)); // {Array} `_id` - e.g. [2, 1]
+    const _id = id.split(',').map((num) => Number.parseInt(num)); // {Array} `_id` - e.g. [2, 1]
 
     axios.put('/reviews', { _id })
-      .then(({ data: reviews }) => this.setState({ reviews }))
-      .catch(console.error);
-  }
-
-
-  /**
-   * Axios GET request - Initialize App's `reviews`
-   */
-  componentDidMount() {
-    axios.get('/reviews')
       .then(({ data: reviews }) => this.setState({ reviews }))
       .catch(console.error);
   }
@@ -164,25 +170,53 @@ class App extends Component {
    * @returns JSX element
    */
   render() {
-    const { languages, ratings, reviews, search, selectedLang, times, types } = this.state;
+    const {
+      languages,
+      ratings,
+      reviews,
+      search,
+      selectedLang,
+      times,
+      types,
+    } = this.state;
+
     return (
       <div>
         <Header />
         <ReviewsBox>
-          <Ratings ratings={ratings} handleChange={this.handleRatingChange} />
-          <TravelerType types={types} handleChange={this.handleTravelerChange} />
-          <TimeOfYear times={times} handleChange={this.handleTimeChange} />
-          <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
+          <Ratings
+            ratings={ratings}
+            handleChange={this.handleRatingChange}
+          />
+          <TravelerType
+            types={types}
+            handleChange={this.handleTravelerChange}
+          />
+          <TimeOfYear
+            times={times}
+            handleChange={this.handleTimeChange}
+          />
+          <Languages
+            languages={languages}
+            selected={selectedLang}
+            handleChange={this.handleLangChange}
+          />
         </ReviewsBox>
-        <Search handleChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit} />
-        <ReviewList ratings={ratings} reviews={reviews} target={search} times={times} types={types} handleChange={this.updateHelpful} />
+        <Search
+          handleChange={this.handleSearchChange}
+          handleSubmit={this.handleSearchSubmit}
+        />
+        <ReviewList
+          ratings={ratings}
+          reviews={reviews}
+          target={search}
+          times={times}
+          types={types}
+          handleChange={this.updateHelpful}
+        />
       </div>
     );
   }
 }
 
 export default App;
-
-/*
-<ReviewList ratings={ratings} reviews={reviews} target={search} times={times} types={types} handleChange={this.updateHelpful} /> 
-*/

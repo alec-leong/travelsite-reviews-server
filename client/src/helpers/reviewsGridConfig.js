@@ -19,9 +19,9 @@ const languages = [
 
 const ratings = [
   { Excellent: false },
-  { 'Very Good': false }, 
+  { 'Very Good': false },
   { Average: false },
-  { Poor: false }, 
+  { Poor: false },
   { Terrible: false },
 ];
 
@@ -47,4 +47,4 @@ export {
   ratings,
   times,
   types,
-}; 
+};

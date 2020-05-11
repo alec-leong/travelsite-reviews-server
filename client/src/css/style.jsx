@@ -153,7 +153,7 @@ export {
   InputSearch,
   Label,
   P,
-  ReviewsBox, 
+  ReviewsBox,
   Span,
   TransparentCircle,
 };

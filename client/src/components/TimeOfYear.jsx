@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Label, P } from '../css/style';
 
 const TimeOfYear = ({ times, handleChange }) => (
