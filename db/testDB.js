@@ -37,5 +37,4 @@ Listings.findOne({ 'reviews.dateOfTrip': 'October 2019' })
   .then(console.log)
   .catch(console.error)
   .finally(() => connection.close());
-
-// $or: [{ dateOfTrip: { $regex: /September/ } }, { dateOfTrip: { $regex: /October/ } }, { dateOfTrip: { $regex: /November/ } }]
+  // $or: [{ dateOfTrip: { $regex: /September/ } }, { dateOfTrip: { $regex: /October/ } }, { dateOfTrip: { $regex: /November/ } }]

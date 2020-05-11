@@ -11,7 +11,7 @@
     "seed-test": "jest --env=node --forceExit test/seed.test.js",
     "server-test": "jest --env=node --forceExit test/server.test.js",
     "start": "nodemon server/index.js",
-    "test": "jest --env=node --forceExit test/seed.test.js && jest --env=node --forceExit test/server.test.js && jest --forceExit test/App.test.jsx && gnome-terminal && npm start && node nightwatch.js test/nightwatch.test.js -e chrome",
+    "test": "jest --env=node --forceExit test/seed.test.js && jest --env=node --forceExit test/server.test.js && jest --forceExit test/App.test.jsx && node nightwatch.js test/nightwatch.test.js -e chrome",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
