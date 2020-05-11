@@ -15,7 +15,7 @@ const reviewSchema = new Schema({
   title: String,
   review: String,
   dateOfReview: String,
-  dateofTrip: String,
+  dateOfTrip: String,
   tripType: String,
   helpful: Number,
 });

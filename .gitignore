@@ -1,6 +1,13 @@
 node_modules
 test/__snapshots__
+test/tests_output
+client/clientGetReq.js
 client/dist/bundle.js
+helpers/testFilter.js
+chromedriver.log
 details
+geckodriver.log
 package-lock.json
 temp.js
+UML.jpg
+UML.mdj

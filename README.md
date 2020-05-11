@@ -19,11 +19,13 @@ $ mongo
 
 ========= 2. API Instructions =========
 
-============= Terminal  3 =============
+============ 2A Terminal 3 ============
 $ npm start
 
-============= Terminal  4 =============
+============ 2B Terminal 4 ============
 $ npm run api
+
+========= 2C Close Terminal 3 =========
 
 
 
@@ -33,3 +35,24 @@ $ npm run api
 
 ============= Terminal  5 =============
 $ npm test
+
+
+
+
+
+========= 4. Run  Application =========
+
+============= Terminal  6 =============
+$ npm start
+
+============= Terminal  7 =============
+$ npm run react-dev
+
+
+
+
+
+========== Test NightWatchJS ==========
+
+============= Terminal  X =============
+$ ./node_modules/.bin/nightwatch node_modules/nightwatch/examples/tests/ecosia.js

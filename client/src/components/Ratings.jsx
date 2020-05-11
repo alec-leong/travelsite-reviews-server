@@ -1,11 +1,11 @@
 import React from 'react';
 import { Label, P } from '../css/style';
 
-const TravelerType = ({ types, handleChange }) => (
+const Ratings = ({ ratings, handleChange }) => (
   <form>
-    <P>Travel type</P>
-    {types.map((month, i) => {
-      const [key] = Object.keys(month);
+    <P>Traveler rating</P>
+    {ratings.map((rating, i) => {
+      const [key] = Object.keys(rating);
 
       return (
         <Label key={i}>
@@ -13,7 +13,7 @@ const TravelerType = ({ types, handleChange }) => (
             type="checkbox"
             index={i}
             name={key}
-            checked={month[key]}
+            checked={rating[key]}
             onChange={handleChange}
           />
           {key}
@@ -24,4 +24,4 @@ const TravelerType = ({ types, handleChange }) => (
   </form>
 );
 
-export default TravelerType;
+export default Ratings;

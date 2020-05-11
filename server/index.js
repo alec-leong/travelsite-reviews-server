@@ -32,9 +32,31 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 /* ==================================== HTTP request handlers =================================== */
 
-app.get('/:id', ({ params: { id } }, res) => {
+// for '../test/server.test.js'
+app.get('/reviews/:id', ({ params: { id } }, res) => {
   Listings.findById(id)
     .then((query) => res.status(200).send(query))
+    .catch((err) => res.status(500).send(err));
+});
+
+app.get('/reviews', (req, res) => {
+  Listings.findOne()
+    .then(({ reviews }) => res.status(200).send(reviews))
+    .catch((err) => res.status(500).send(err));
+});
+
+app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
+  // console.log(_id);
+  // res.status(200).send('PUT resolved')
+
+  Listings.findOne()
+    .then((query) => {
+      const doc = query;
+      doc.reviews.id(_id).helpful += 1;
+      return Listings.findByIdAndUpdate({ _id: _id[0] }, new Listings(doc));
+    })
+    .then(() => Listings.findOne())
+    .then(({ reviews }) => res.status(200).send(reviews)) // update
     .catch((err) => res.status(500).send(err));
 });
 
