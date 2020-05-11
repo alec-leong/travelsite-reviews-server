@@ -5,15 +5,7 @@ import styled from 'styled-components';
 //   font-size: 14px;
 // `;
 
-// reviews
-const Header2 = styled.h2`
-  border-bottom: 1px solid #D3D3D3;
-  font-family: 'Trip Sans', Arial, sans-serif !important;
-  font-size: 28px;
-  color: #000a12;
-`;
-
-// <p> tag
+// Style <p> tag in `Languages`, `Ratings`, `TimeOfYear`, and `TravelerType` components
 const P = styled.p`
   font-family: 'Trip Sans', Arial, sans-serif !important;
   font-size: 14px;
@@ -21,14 +13,14 @@ const P = styled.p`
   color: rgb(0, 10, 18);
 `;
 
-// checkbox, radio
+// Style <label> tag in `Languages`, `Ratings`, `TimeOfYear`, and `TravelerType` components
 const Label = styled.label`
   font-family: 'Trip Sans', Arial, sans-serif !important;
   font-size: 14px;
   color: rgb(0, 0, 0)
 `;
 
-// number
+// Style number in `Languages` component
 const Span = styled.span`
   font-family: 'Trip Sans', Arial, sans-serif !important;
   font-size: 14px;
@@ -65,12 +57,103 @@ const TransparentCircle = styled.div`
   -moz-border-radius: 7px;
 `;
 
+// Style flexbox in `App` component
+const ReviewsBox = styled.div`
+  /* create flex layout */
+  display: flex;
+
+  /* define flow direction */
+  flex-flow: row nowrap;
+
+  /* define how remaining space is destributed */
+  justify-content: space-around;
+
+
+  /* define background */
+  background-color: white;
+  
+  /* define border */
+  border-top: 1px solid #D3D3D3;
+  border-bottom: 2px solid black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+`;
+
+// Style <h2> tag in `Header` component
+const H2 = styled.h2`
+  /* create flex layout */
+  display: flex;
+  
+  /* define border */
+  border-top: 2px solid black;
+  border-bottom: 1px solid #D3D3D3;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+
+  /* define flow direction */
+  flex-flow: row nowrap;
+
+  /* define how remaining space is destributed */
+  justify-content: flex-start;
+  
+  padding: 10px;
+  margin: 0;
+
+  /* define font */
+  font-family: 'Trip Sans', Arial, sans-serif !important;
+  font-size: 28px;
+  color: #000a12;
+
+  /* define background */
+  background-color: white;
+`;
+
+// Style <form> tag in `Search` component
+const FormSearch = styled.form`
+  /* create flex layout */
+  display: flex;
+
+  /* define flow direction */
+  flex-flow: row nowrap;
+
+  /* define how remaining space is destributed */
+  justify-content: flex-start;
+  
+  padding: 0;
+  margin: 10px 0 10px 0;
+
+  /* define font */
+  font-family: 'Trip Sans', Arial, sans-serif !important;
+  font-size: 14px;
+`;
+
+// Style <input type="search"> tag in `Search` component
+const InputSearch = styled.input.attrs({
+  type: 'search',
+  name: 'search',
+  placeholder: 'Search reviews',
+})`
+  width: 100%;
+
+  /* define font */
+  font-family: 'Trip Sans', Arial, sans-serif !important;
+  font-size: 14px;
+`;
+
 export {
+  FormSearch,
   FullCircle,
+  H2,
   HalfCircle,
-  Header2,
+  InputSearch,
   Label,
   P,
+  ReviewsBox, 
   Span,
   TransparentCircle,
 };

@@ -1,6 +1,12 @@
 import React from 'react';
-import { Header2 } from '../css/style';
+import { H2 } from '../css/style';
 
-export default () => (
-  <Header2>Reviews</Header2>
+const Header = () => (
+  <H2>Reviews</H2>
 );
+
+export default Header; 
+
+// export default () => (
+//   <H2>Reviews</H2>
+// );

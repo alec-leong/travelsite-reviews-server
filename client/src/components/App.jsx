@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Languages from './Languages';
 import Ratings from './Ratings';
-import ReviewList from './review/ReviewList';
+import ReviewList from './ReviewList';
 import Search from './Search';
 import TimeOfYear from './TimeOfYear';
 import TravelerType from './TravelerType';
+import { ReviewsBox } from '../css/style';
 import { ratings, types, times, languages } from '../helpers/reviewsGridConfig';
 
 
@@ -167,11 +168,13 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <Ratings ratings={ratings} handleChange={this.handleRatingChange} />
-        <TravelerType types={types} handleChange={this.handleTravelerChange} />
-        <TimeOfYear times={times} handleChange={this.handleTimeChange} />
-        <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
-        <Search search={search} handleChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit} />
+        <ReviewsBox>
+          <Ratings ratings={ratings} handleChange={this.handleRatingChange} />
+          <TravelerType types={types} handleChange={this.handleTravelerChange} />
+          <TimeOfYear times={times} handleChange={this.handleTimeChange} />
+          <Languages languages={languages} selected={selectedLang} handleChange={this.handleLangChange} />
+        </ReviewsBox>
+        <Search handleChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit} />
         <ReviewList ratings={ratings} reviews={reviews} target={search} times={times} types={types} handleChange={this.updateHelpful} />
       </div>
     );
@@ -179,3 +182,7 @@ class App extends Component {
 }
 
 export default App;
+
+/*
+<ReviewList ratings={ratings} reviews={reviews} target={search} times={times} types={types} handleChange={this.updateHelpful} /> 
+*/

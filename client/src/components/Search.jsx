@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React  from 'react';
+import { FormSearch, InputSearch } from '../css/style';
 
-const Search = ({ search, handleChange, handleSubmit }) => (
-  <form onSubmit={handleSubmit}>
+const Search = ({ handleChange, handleSubmit }) => (
+  <FormSearch onSubmit={handleSubmit}>
     &#x1f50e;
-    <input
-      type="search"
-      name="search"
-      placeholder="Search reviews"
+    <InputSearch
       onChange={handleChange}
     />
-  </form>
+  </FormSearch>
 );
 
 export default Search;
