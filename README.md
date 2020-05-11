@@ -33,3 +33,6 @@ $ npm run api
 
 ============= Terminal  5 =============
 $ npm test
+
+
+./node_modules/.bin/nightwatch node_modules/nightwatch/examples/tests/ecosia.js

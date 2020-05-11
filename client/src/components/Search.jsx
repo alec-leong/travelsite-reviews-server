@@ -4,7 +4,7 @@ const Search = ({ search, handleChange, handleSubmit }) => (
   <form onSubmit={handleSubmit}>
     &#x1f50e;
     <input
-      type="text"
+      type="search"
       name="search"
       placeholder="Search reviews"
       onChange={handleChange}

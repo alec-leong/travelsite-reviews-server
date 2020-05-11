@@ -38,7 +38,7 @@ const ReviewList = ({ handleChange, ratings, reviews, target, times, types }) =>
             </p>
             <p>{_.range(0, rating).map((val) => <span><FullCircle /> </span>)}</p>
             <p><b>{title}</b></p>
-            <p>{review}</p>
+            <p className="review">{review}</p>
             <p><b>Date of experience: </b>{dateOfTrip}</p>
             <p><b>Trip Type: </b>{tripType}</p>
             <p>{helpful} helpful vote{isPlural(helpful)}</p>
