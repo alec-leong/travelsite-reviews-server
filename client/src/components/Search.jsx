@@ -1,12 +1,13 @@
 import React  from 'react';
-import { FormSearch, InputSearch } from '../css/style';
+import { FormSearch, InputSearch, LabelSearch } from '../css/style';
 
 const Search = ({ handleChange, handleSubmit }) => (
   <FormSearch onSubmit={handleSubmit}>
-    &#x1f50e;
-    <InputSearch
-      onChange={handleChange}
-    />
+    <LabelSearch>'
+      <InputSearch
+        onChange={handleChange}
+      />
+    </LabelSearch>
   </FormSearch>
 );
 
