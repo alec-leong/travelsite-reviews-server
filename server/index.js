@@ -1,6 +1,12 @@
 const colors = require('colors');
+const compression = require('compression');
+const cors = require('cors');
 const express = require('express');
+const helmet = require('helmet');
 const path = require('path');
+const Promise = require('bluebird');
+const spdy = require('spdy');
+const { OPTIONS, PORT } = require('./config.js');
 const { Listings } = require('../db/index.js');
 
 
@@ -9,17 +15,21 @@ const { Listings } = require('../db/index.js');
 // create express application
 const app = express();
 
-const PORT = 3000;
+// enable cors
+app.use(cors());
 
-// listen
-const server = app.listen(PORT, () => console.log(`Server listening on PORT ${(PORT.toString())}`));
+// compression middleware
+app.use(compression());
+
+// security-related HTTP middleware
+app.use(helmet());
 
 // set the 'Content-Type' that the middleware will parse
 app.use(express.json());
 
 // logger
-app.use(({ body, method, url }, res, next) => {
-  console.log(`${method.yellow} request at ${colors.cyan(url)}`);
+app.use(({ body, method, secure, url }, res, next) => {
+  console.log(`${method.yellow} request at ${secure} ${url.cyan}`);
   console.log(body);
 
   // next middleware
@@ -28,7 +38,6 @@ app.use(({ body, method, url }, res, next) => {
 
 // serving static file
 app.use(express.static(path.join(__dirname, '../client/dist')));
-
 
 /* ==================================== HTTP request handlers =================================== */
 
@@ -46,9 +55,6 @@ app.get('/reviews', (req, res) => {
 });
 
 app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
-  // console.log(_id);
-  // res.status(200).send('PUT resolved')
-
   Listings.findOne()
     .then((query) => {
       const doc = query;
@@ -59,6 +65,12 @@ app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
     .then(({ reviews }) => res.status(200).send(reviews)) // update
     .catch((err) => res.status(500).send(err));
 });
+
+const server = spdy.createServer(OPTIONS, app);
+server.listen = Promise.promisify(server.listen);
+server.listen(PORT)
+  .then(() => console.log(`HTTP/2 server listening on PORT ${colors.green(PORT)}`))
+  .catch(console.error);
 
 module.exports = {
   server,

@@ -136,13 +136,18 @@ const FormSearch = styled.form`
 const InputSearch = styled.input.attrs({
   type: 'search',
   name: 'search',
-  placeholder: 'Search reviews',
+  placeholder: '🔎 Search reviews',
 })`
   width: 100%;
 
   /* define font */
   font-family: 'Trip Sans', Arial, sans-serif !important;
   font-size: 14px;
+`;
+
+const LabelSearch = styled.label`
+  width: 100%;
+  color: #ececec;
 `;
 
 export {
@@ -152,6 +157,7 @@ export {
   HalfCircle,
   InputSearch,
   Label,
+  LabelSearch,
   P,
   ReviewsBox,
   Span,

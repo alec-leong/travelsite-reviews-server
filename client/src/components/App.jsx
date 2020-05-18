@@ -8,6 +8,7 @@ import Search from './Search';
 import TimeOfYear from './TimeOfYear';
 import TravelerType from './TravelerType';
 import { ReviewsBox } from '../css/style';
+import OPTIONS from './app.config';
 import {
   languages,
   ratings,
@@ -159,7 +160,7 @@ class App extends Component {
     const { id } = event.target; // {String} `id` - e.g. '2,1' where '2' listing ID; '1' review ID
     const _id = id.split(',').map((num) => Number.parseInt(num)); // {Array} `_id` - e.g. [2, 1]
 
-    axios.put('/reviews', { _id })
+    axios.put('/reviews', { _id }, OPTIONS)
       .then(({ data: reviews }) => this.setState({ reviews }))
       .catch(console.error);
   }
