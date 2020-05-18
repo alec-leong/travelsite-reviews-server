@@ -6,7 +6,7 @@ const OPTIONS = {
   cert: fs.readFileSync(path.join(__dirname, '../localhost-cert.pem')),
 }; 
 
-const PORT = 3000;
+const PORT = 3004;
 
 module.exports = {
   OPTIONS,
