@@ -10,7 +10,8 @@
     "seed": "node db/seed.js",
     "seed-test": "jest --env=node --forceExit test/seed.test.js",
     "server-test": "jest --env=node --forceExit test/server.test.js",
-    "start": "openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' -keyout localhost-privkey.pem -out localhost-cert.pem && nodemon server/index.js",
+    "ssl": "openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' -keyout localhost-privkey.pem -out localhost-cert.pem",
+    "start": "nodemon server/index.js",
     "test": "jest --env=node --forceExit test/seed.test.js && jest --env=node --forceExit test/server.test.js && jest --forceExit test/App.test.jsx && node nightwatch.js test/nightwatch.test.js -e chrome",
     "test:watch": "npm run test -- --watch"
   },
