@@ -1,58 +1,122 @@
-======= 1. Seeding Instructions =======
+# tripadvisor-reviews-server
 
-============= Terminal  1 =============
-$ npm run seed
-
-============= Terminal  2 =============
-
-$ mongo
-
-> show dbs
-> use tripAdvisor
-> show collections
-> db.listings.count()
-> db.listings.findOne({}, { "_id": 1 })
+## About
 
 
+### Main Development Dependencies
 
+| DevDependency | Version |
+| ------------- | :-----: |
+| @babel        | 7       |
+| jest          | 25      |
+| react         | 16      |
+| webpack       | 4       |
 
+---
 
-========= 2. API Instructions =========
+## Getting Started
 
-============ 2A Terminal 3 ============
-$ npm start
+### 1. Install dependencies and development dependencies
 
-============ 2B Terminal 4 ============
-$ npm run api
+```sh
+  npm install
+```
 
-========= 2C Close Terminal 3 =========
+#### &emsp;&emsp;&emsp;&emsp;_node_modules_ directory is now added
 
+```
+        .
+        └── node_modules
+```
 
+### 2. Populate MongoDB database
 
+```sh
+  npm run seed
+```
 
+### 3. Start webpack
 
-========= 3. Test Instruction =========
+```sh
+  npm run react-dev
+```
 
-============= Terminal  5 =============
-$ npm test
+#### &emsp;&emsp;&emsp;&emsp;_bundle.js_ is now compiled
 
+```
+        .
+        └── client
+            └── dist
+                ├── index.html
+                └── bundle.js
+```
 
+### 4. Open a new terminal
 
+### 5. Start Express.js server
 
+```sh
+  npm run server-dev
+```
 
-========= 4. Run  Application =========
+#### &emsp;&emsp;&emsp;&emsp;Now visit _[http://localhost:3004/](http://localhost:3004/)_ to see the React application.
 
-============= Terminal  6 =============
-$ npm start
+---
 
-============= Terminal  7 =============
-$ npm run react-dev
+## Test App.jsx
 
+### Pre-requisite: complete _Getting_ _Started_ setup
 
+```sh
+  npm run test:react-app
+```
 
+### &emsp;&emsp;&emsp;_App.test.jsx.snap_ is now created; output of test results
 
+```
+        .
+        └── test
+            └── __snapshots__
+                └── App.test.jsx.snap
+```
 
-========== Test NightWatchJS ==========
+--- 
 
-============= Terminal  X =============
-$ ./node_modules/.bin/nightwatch node_modules/nightwatch/examples/tests/ecosia.js
+## Test Search.jsx
+
+### Pre-requisite: 
+1. complete _Getting_ _Started_ setup
+2. terminate the terminal running _npm_ _run_ _server-dev_
+
+```
+  npm run test:react-search
+```
+
+### &emsp;&emsp;&emsp;Output of test results in _tests_output_ directory
+
+```
+        .
+        └── tests_output
+```
+
+---
+
+## Test Seed
+
+### Pre-requisite: complete _Getting_ _Started_ setup
+
+```
+  npm run test:seed
+```
+
+---
+
+## Test Server
+
+### Pre-requisite: 
+1. complete _Getting_ _Started_ setup
+2. terminate the terminal running _npm_ _run_ _server-dev_
+
+```
+  npm run test:server
+```
