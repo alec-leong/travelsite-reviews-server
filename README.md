@@ -3,19 +3,19 @@
 ## Table of Contents
 
 1. [About](#about)
-  - [Main Development Dependencies](#main-development-dependencies)
-  - [Technologies](#technologies)
+    - [Main Development Dependencies](#main-development-dependencies)
+    - [Technologies](#technologies)
 2. [Getting Started](#getting-started)
-  1. [Install dependencies and development dependencies](#1-install-dependencies-and-development-dependencies)
-  2. [Populate MongoDB database](#2-populate-mongodb-database)
-  3. [Start webpack](#3-start-webpack)
-  4. [Open a new terminal](#4-open-a-new-terminal)
-  5. [Start Express.js server](#5-start-expressjs-server)
+    1. [Install dependencies and development dependencies](#1-install-dependencies-and-development-dependencies)
+    2. [Populate MongoDB database](#2-populate-mongodb-database)
+    3. [Start webpack](#3-start-webpack)
+    4. [Open a new terminal](#4-open-a-new-terminal)
+    5. [Start Express.js server](#5-start-expressjs-server)
 3. [Tests](#tests)
-  - [Test App.jsx](#test-appjsx)
-  - [Test Search.jsx](#test-searchjsx)
-  - [Test Seed](#test-seed)
-  - [Test Server](#test-server)
+    - [Test App.jsx](#test-appjsx)
+    - [Test Search.jsx](#test-searchjsx)
+    - [Test Seed](#test-seed)
+    - [Test Server](#test-server)
 4. [Conversation](#conversation)
 
 ---
@@ -155,18 +155,8 @@
 
 ---
 
-## Conversation
+## [Conversation](https://www.youtube.com/watch?v=sSD-YE4KlrM)
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="description" content="React application">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reviews</title>
-  </head>
+[![HRSF127 | FEC | Group 12: NoStepOnSnek | Final](https://img.youtube.com/vi/sSD-YE4KlrM/0.jpg)](https://www.youtube.com/watch?v=sSD-YE4KlrM "HRSF127 | FEC | Group 12: NoStepOnSnek | Final")
 
-  <body>
-    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/sSD-YE4KlrM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </body>
-</html>
+### [Click here to view video](https://www.youtube.com/watch?v=sSD-YE4KlrM)
