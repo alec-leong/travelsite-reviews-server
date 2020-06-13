@@ -5,12 +5,14 @@ const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
 const Promise = require('bluebird');
+const open = require('open');
+const os = require('os');
 const spdy = require('spdy');
 const { OPTIONS, PORT } = require('./config.js');
 const { Listings } = require('../db/index.js');
 
 
-/* ======================================= Express server ======================================= */
+/* ===================================== Express application ==================================== */
 
 // create express application
 const app = express();
@@ -66,10 +68,38 @@ app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
     .catch((err) => res.status(500).send(err));
 });
 
+/* ========================================= SPDY server ======================================== */
+
 const server = spdy.createServer(OPTIONS, app);
 server.listen = Promise.promisify(server.listen);
 server.listen(PORT)
-  .then(() => console.log(`SPDY server listening on PORT ${colors.green(PORT)}`))
+  .then(() => {
+    console.log(`SPDY server listening on PORT ${colors.green(PORT)}`);
+    
+    if (process.env.MODE === 'dev') {
+      let app;
+      switch(os.type()) {
+        case 'Linux':
+          app = 'google-chrome';
+          break;
+        case 'Darwin':
+          app = 'google chrome';
+          break;
+        case 'Windows_NT':
+          app = 'chrome';
+          break;
+        default:
+          app = null;
+      }
+
+      if (
+        app && 
+        (process.env.SERVER_HOST === 'localhost' || process.env.SERVER_HOST === '127.0.0.1')
+      ) {
+          open(`http://localhost:${PORT}`, { app })
+      }
+    }
+  })
   .catch(console.error);
 
 module.exports = {

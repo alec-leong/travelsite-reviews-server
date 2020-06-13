@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
@@ -10,7 +11,7 @@ const OPTIONS = {
   },
 }; 
 
-const PORT = 3004;
+const PORT = process.env.SERVER_PORT || 3000;
 
 module.exports = {
   OPTIONS,
