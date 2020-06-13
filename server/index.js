@@ -29,7 +29,7 @@ app.use(express.json());
 
 // logger
 app.use(({ body, method, secure, url }, res, next) => {
-  console.log(`${method.yellow} request at ${secure} ${url.cyan}`);
+  console.log(`${method.yellow} request at ${url.cyan}`);
   console.log(body);
 
   // next middleware
