@@ -69,7 +69,7 @@ app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
 const server = spdy.createServer(OPTIONS, app);
 server.listen = Promise.promisify(server.listen);
 server.listen(PORT)
-  .then(() => console.log(`HTTP/2 server listening on PORT ${colors.green(PORT)}`))
+  .then(() => console.log(`SPDY server listening on PORT ${colors.green(PORT)}`))
   .catch(console.error);
 
 module.exports = {
