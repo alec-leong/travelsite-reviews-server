@@ -2,7 +2,6 @@
 
 ## About
 
-
 ### Main Development Dependencies
 
 | DevDependency | Version |
@@ -24,7 +23,7 @@
 
 #### &emsp;&emsp;&emsp;&emsp;_node_modules_ directory is now added
 
-```
+```text
         .
         └── node_modules
 ```
@@ -43,7 +42,7 @@
 
 #### &emsp;&emsp;&emsp;&emsp;_bundle.js_ is now compiled
 
-```
+```text
         .
         └── client
             └── dist
@@ -65,7 +64,9 @@
 
 ## Test App.jsx
 
-### Pre-requisite: complete _Getting_ _Started_ setup
+### Pre-requisite-App
+
+1. complete [_Getting_ _Started_](#getting-started) setup
 
 ```sh
   npm run test:react-app
@@ -73,28 +74,29 @@
 
 ### &emsp;&emsp;&emsp;_App.test.jsx.snap_ is now created; output of test results
 
-```
+```text
         .
         └── test
             └── __snapshots__
                 └── App.test.jsx.snap
 ```
 
---- 
+---
 
 ## Test Search.jsx
 
-### Pre-requisite: 
+### Pre-requisite-Search
+
 1. complete [_Getting_ _Started_](#getting-started) setup
 2. terminate the terminal running [_npm_ _run_ _server-dev_](#5-start-expressjs-server)
 
-```
+```sh
   npm run test:react-search
 ```
 
 ### &emsp;&emsp;&emsp;Output of test results in _tests_output_ directory
 
-```
+```text
         .
         └── tests_output
 ```
@@ -103,9 +105,11 @@
 
 ## Test Seed
 
-### Pre-requisite: complete _Getting_ _Started_ setup
+### Pre-requisite-Seed
 
-```
+1. complete [_Getting_ _Started_](#getting-started) setup
+
+```sh
   npm run test:seed
 ```
 
@@ -113,11 +117,12 @@
 
 ## Test Server
 
-### Pre-requisite: 
+### Pre-requisite-Server
+
 1. Chrome version 83 or lower
 2. complete [_Getting_ _Started_](#getting-started) setup
 3. terminate the terminal running [_npm_ _run_ _server-dev_](#5-start-expressjs-server)
 
-```
+```sh
   npm run test:server
 ```
