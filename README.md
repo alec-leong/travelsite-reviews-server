@@ -85,8 +85,8 @@
 ## Test Search.jsx
 
 ### Pre-requisite: 
-1. complete _Getting_ _Started_ setup
-2. terminate the terminal running _npm_ _run_ _server-dev_
+1. complete [_Getting_ _Started_](#getting-started) setup
+2. terminate the terminal running [_npm_ _run_ _server-dev_](#5-start-expressjs-server)
 
 ```
   npm run test:react-search
@@ -114,8 +114,9 @@
 ## Test Server
 
 ### Pre-requisite: 
-1. complete _Getting_ _Started_ setup
-2. terminate the terminal running _npm_ _run_ _server-dev_
+1. Chrome version 83 or lower
+2. complete [_Getting_ _Started_](#getting-started) setup
+3. terminate the terminal running [_npm_ _run_ _server-dev_](#5-start-expressjs-server)
 
 ```
   npm run test:server
