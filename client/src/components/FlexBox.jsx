@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import _ from 'underscore';
 
 const ReviewsContainer = styled.div`
   display: flex;
@@ -13,12 +14,6 @@ const Review = styled.div`
 `;
 
 const Profile = styled.div`
-  /* define border */
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  border-left: 2px solid black;
-  border-right: 2px solid black;
-
   justify-content: flex-start;
   align-content: flex-start;
   display: flex;
@@ -78,16 +73,7 @@ const MapMarkerImg = styled.img`
   height: 16px;
 `;
 
-// const ReportFollowRowReversed = styled.div`
-// /* Fill the Remaining Horizontal Space (Width) in Flexbox. */
-// flex-grow: 1;
-// `;
-
 const ReportFollowRowReversed = styled.div`
-border-top: 2px solid black;
-border-bottom: 2px solid black;
-border-left: 2px solid black;
-border-right: 2px solid black;
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-start;
@@ -123,12 +109,10 @@ const Circle = styled.span`
 `;
 
 const Menu = styled.div`
-border-top: 2px solid black;
-border-bottom: 2px solid black;
-border-left: 2px solid black;
-border-right: 2px solid black;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 8px 0 rgb(140, 140, 140);, 0 6px 20px 0 rgb(140, 140, 140);;
+
 `;
 
 const MenuItem = styled.a.attrs((props) => ({
@@ -142,35 +126,6 @@ color: rgb(140, 140, 140);
   color: #000000;
 }
 `;
-
-// const FlexBox = () => (
-//   <ReviewsContainer>
-//     <Review marginBottom="12px">
-//       <Profile marginTopAndBottom={12}>
-//         {/* <ProfileImgContainer> */}
-//         <a href=""><ProfileImg alt="" src="http://www.newdesignfile.com/postpic/2014/07/generic-profile-avatar_352864.jpg" /></a>
-//         {/* </ProfileImgContainer> */}
-
-//         <ProfileUserContainer>
-//           <UsernameContainer>
-//             <Username href="">RojoPanda18</Username>
-//             <DateOfReview>&nbsp;wrote a review Jul 9</DateOfReview>
-//           </UsernameContainer>
-//           <UserLocation>
-//             <MapMarkerImg alt="" src="https://developers.google.com/maps/images/lhimages/api/icon_placesapi.svg" />
-//             San Diego, California &#8226; 41 contributions &#8226; 3 helpful votes
-//           </UserLocation>
-//         </ProfileUserContainer>
-//         <ReportFollowRowReversed>
-//           <Circle />
-//           <Circle />
-//           <Circle />
-//         </ReportFollowRowReversed>
-//       </Profile>
-
-//     </Review>
-//   </ReviewsContainer>
-// );
 
 const SpanNumContributions = styled.span`
   font-weight: 700;
@@ -240,6 +195,11 @@ const SpanDateOfExperience = styled.span`
   font-weight: 700;
 `;
 
+const SpanTripType = styled(SpanDateOfExperience)`
+  // display: inline;
+  font-weight: 700;
+`;
+
 const SpanHelpfulVotes = styled.span`
   padding: 3px 0;
   font-size: 12px;
@@ -283,25 +243,34 @@ background-color: transparent;
 
 const ButtonShare = styled(ButtonHelpful)``;
 
+import AES from 'crypto-js/aes';
+import SHA256 from 'crypto-js/sha256';
+import BASE64 from 'crypto-js/enc-base64';
+import UTF16 from 'crypto-js/enc-utf16';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const key = process.env.REVIEW_LIST_KEY || '';
 
 export default class FlexBox extends React.Component {
-  // state = { 
-  //   isReportFollowedClicked: false,
-  //   helpful: 1,
-  // }
-
-  // handleReportFollowClick = () => this.setState({ isReportFollowedClicked: !this.state.isReportFollowedClicked })
-  // incrementHelpful = () => this.setState({ helpful: this.state.helpful + 1 });
   constructor(props) {
     super(props);
 
+    // const monitorHelpfulAndReportFollow = {};
+    // for (let i = 0; i < this.props.reviews.length; i += 1) {
+    //   monitorHelpfulAndReportFollow[AES.encrypt(`${_id[1]}`, key).toString()] = {
+    //     isHelpful: 0, // Possible values: 0, 1.
+    //     isReportFollowedClicked: false, // Possible values: true, false.
+    //   };
+    // }
+
     this.state = {
       isReportFollowedClicked: false,
-      helpful: 1,
+      // monitorHelpfulAndReportFollow,
     };
 
     this.handleReportFollowClick = this.handleReportFollowClick.bind(this);
-    this.incrementHelpful = this.incrementHelpful.bind(this);
   }
 
   handleReportFollowClick() {
@@ -310,31 +279,42 @@ export default class FlexBox extends React.Component {
     });
   }
 
-  incrementHelpful() {
-    this.setState({ helpful: this.state.helpful + 1 });
-  }
 
   render() {
-    return (
-      <ReviewsContainer>
-        <Review marginBottom="12px">
+    const { reviews } = this.props;
 
+    return reviews.length ? (
+      <ReviewsContainer>
+        {reviews.map(({
+          _id,
+          username,
+          location,
+          contributions,
+          rating,
+          title,
+          review,
+          dateOfReview,
+          dateOfTrip,
+          tripType,
+          helpful,
+        }) => (
+        <Review key={SHA256(dateOfTrip + username + _id + dateOfReview).toString()} marginBottom="12px">
           <Profile marginTopAndBottom={12}>
             <a href=""><ProfileImg alt="" src="http://www.newdesignfile.com/postpic/2014/07/generic-profile-avatar_352864.jpg" /></a>    
             <ProfileUserContainer>
               <UsernameContainer>
-                <Username href="">RojoPanda18</Username>
-                <DateOfReview>&nbsp;wrote a review Jul 9</DateOfReview>
+                <Username href="">{username}</Username>
+                <DateOfReview>&nbsp;wrote a review {dateOfReview}</DateOfReview>
               </UsernameContainer>
               <UserLocation>
                 <MapMarkerImg alt="" src="https://developers.google.com/maps/images/lhimages/api/icon_placesapi.svg" />
-                <span>San Diego, California &#8226; <SpanNumContributions>41</SpanNumContributions> contributions &#8226; <SpanNumHelpfulVotes>3</SpanNumHelpfulVotes> helpful votes</span>
+                <span>{location} &#8226; <SpanNumContributions>{contributions}</SpanNumContributions> contribution{contributions > 1 ? 's' : ''} &#8226; <SpanNumHelpfulVotes>{helpful}</SpanNumHelpfulVotes> helpful vote{helpful > 1 ? 's' : ''}</span>
               </UserLocation>
             </ProfileUserContainer>
 
             <ReportFollowRowReversed>
               <ReportFollowColumn>
-                <ReportOrFollowButton onClick={this.handleReportFollowClick}>
+                <ReportOrFollowButton name="reportFollowButton" onClick={this.handleReportFollowClick}>
                   <Circle />
                   <Circle />
                   <Circle />
@@ -353,17 +333,26 @@ export default class FlexBox extends React.Component {
 
           <InfoColFlex marginTopAndBottom={12}>
             <RatingRowFlex>
-              <SpanRatingFilled /><SpanRatingEmpty />
+              {// Full rating circle
+              _.range(0, rating).map((element) => (
+                <SpanRatingFilled key={SHA256((element / 2) + dateOfTrip + username + dateOfReview + element).toString(BASE64)}/>
+              ))}
+              {// Empty rating circle
+              _.range(0, rating - 5).map((element) => (
+                <SpanRatingEmpty key={SHA256(element + dateOfReview + username + dateOfTrip + (element / 3)).toString(UTF16)}/>
+              ))}
             </RatingRowFlex>
-            <SpanTitle>Good for one-time visit</SpanTitle>
-            <QReviewDescription>I think my wife enjoyed this more than I did, but I did get free ice cream at the end, so who's complaining. Great time, good for pictures.</QReviewDescription>
-            <SpanDate><SpanDateOfExperience>Date of Experience:</SpanDateOfExperience> January 2020</SpanDate>
-            <SpanHelpfulVotes>{this.state.helpful} Helpful Vote</SpanHelpfulVotes>
-            <span><ButtonHelpful onClick={this.incrementHelpful}>👍 Helpful</ButtonHelpful><ButtonShare>✉️ Share</ButtonShare></span>
+            <SpanTitle>{title}</SpanTitle>
+            <QReviewDescription>{review}</QReviewDescription>
+            <SpanDate><SpanDateOfExperience>Date of experience:</SpanDateOfExperience> {dateOfTrip}</SpanDate>
+            <SpanDate><SpanTripType>Trip type:</SpanTripType> {tripType}</SpanDate>
+              <SpanHelpfulVotes>{helpful} Helpful Vote{helpful > 1 ? 's' : ''}</SpanHelpfulVotes>
+            <span><ButtonHelpful data-parent-id={_id[0]} data-child-id={_id[1]} name="helpfulButton" onClick={this.props.updateHelpful} >👍 Helpful</ButtonHelpful><ButtonShare>✉️ Share</ButtonShare></span>
           </InfoColFlex>
 
         </Review>
+        ))}
       </ReviewsContainer>
-    )
+    ) : (<p>Could not load reviews</p>)
   }
 }

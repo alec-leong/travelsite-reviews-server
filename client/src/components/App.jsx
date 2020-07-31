@@ -1,35 +1,70 @@
 import axios from 'axios';
-import React, { Component } from 'react';
-import Header from './Header';
-import Languages from './Languages';
-import Ratings from './Ratings';
-import ReviewList from './ReviewList';
-import Search from './Search';
-import TimeOfYear from './TimeOfYear';
-import TravelerType from './TravelerType';
+import React, { Component, lazy, Suspense } from 'react';
 import { ReviewsBox } from '../css/style';
-import OPTIONS from './app.config';
-import {
-  languages,
-  ratings,
-  times,
-  types,
-} from '../helpers/reviewsGridConfig';
+import { /* filterMonths, filterRatings, filterTypes, */ filterAll, filterSearch, isPlural } from '../helpers/functions';
+import AES from 'crypto-js/aes';
+import UTF8 from 'crypto-js/enc-utf8';
+import dotenv from 'dotenv';
 
+dotenv.config();
+const key = process.env.REVIEW_LIST_KEY || '';
+
+const FlexBox = lazy(() => import('./FlexBox'));
+const Header = lazy(() => import('./Header'));
+const Languages = lazy(() => import('./Languages'));
+const TravelerRating = lazy(() => import('./TravelerRating'));
+// const ReviewList = lazy(() => import('./ReviewList.jsx'));
+const Search = lazy(() => import('./Search'));
+const TimeOfYear = lazy(() => import('./TimeOfYear'));
+const TravelerType = lazy(() => import('./TravelerType'));
+const renderLoader = () => <p>Loading...</p>;
 
 class App extends Component {
   /**
-   * Constructor
+   * Constructor; initializes internal component state.
    * @param {Object} props - Short for properties; has all the values passed from parent component.
    */
   constructor(props) {
     super(props); // Sets `this.props`. Otherwise, when accessing `this.props`, would be `undefined`
 
     this.state = {
-      ratings,
-      times,
-      types,
-      languages,
+      travelerRating: {
+        Excellent: false,
+        'Very Good': false,
+        Average: false,
+        Poor: false,
+        Terrible: false,
+      },
+      timeOfYear: {
+        'Mar-May': false,
+        'Jun-Aug': false,
+        'Sep-Nov': false,
+        'Dec-Feb': false,
+      },
+      travelerType: {
+        Families: false,
+        Couples: false,
+        Solo: false,
+        Business: false,
+        Friends: false,
+      },
+      language: {
+        'All languages': 1586,
+        English: 1557,
+        Spanish: 11,
+        French: 3,
+        Hebrew: 3,
+        Portuguese: 3,
+        Danish: 1,
+        German: 1,
+        Italian: 1,
+        Japanese: 1,
+        Korean: 1,
+        Dutch: 1,
+        Polish: 1,
+        Swedish: 1,
+        'Chinese (Sim.)': 1,
+      },
       selectedLang: '',
       search: '',
       reviews: [],
@@ -39,166 +74,193 @@ class App extends Component {
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
-    this.handleTravelerChange = this.handleTravelerChange.bind(this);
-    this.updateHelpful = this.updateHelpful.bind(this);
+    this.handleTimeOfYearChange = this.handleTimeOfYearChange.bind(this);
+    this.handleTravelerTypeChange = this.handleTravelerTypeChange.bind(this);
+    this.updateReviewListHelpful = this.updateReviewListHelpful.bind(this);
   }
 
-
   /**
-   * Axios GET request - Initialize App's `reviews`
+   * Invoked immediately after `<App />` is mounted.
+   * Loads data from a remote endpoint.
+   * Uses React setState() to update `<App />`s `reviews` property to the loaded data.
    */
   componentDidMount() {
     axios.get('/reviews')
-      .then(({ data: reviews }) => this.setState({ reviews }))
+      .then(({ data: reviews }) => {
+        // Iterate `reviews` to encrypt each document's `_id` field's elements.
+        for (let i = 0; i < reviews.length; i += 1) {
+          const { _id } = reviews[i];
+          reviews[i]._id = [AES.encrypt(`${_id[0]}`, key).toString(), AES.encrypt(`${_id[1]}`, key).toString()];
+        }
+
+        this.setState({ reviews })
+      })
       .catch(console.error);
   }
 
   /**
-   * Handle change in Languages' `props`
-   * @param {Object} target - The `target` property of the `Event` interface is a reference to the
-   *                          object onto which the event was dispatched.
-   * @param {String} name - The native DOM `name` attribute.
-   * @param {String} selectedLang - An alias for `name` parameter.
+   * Handles change in `<Languages />`'s `props`.
+   * Uses React setState() to update `<App />`s `selectedLang` property.
+   * @param {Object} event - The `Event` interface; a reference to the object onto which the event
+   * was dispatched.
+   * @param {Object} event.target - The `target` property of the `Event` interface is a reference to
+   * the object onto which the event was dispatched.
+   * @param {string} event.target.name - The native DOM `name` attribute.
    */
-  handleLangChange({ target: { name: selectedLang } }) {
+  handleLangChange(event) {
+    const { target: { name } } = event;
+
     this.setState({
-      selectedLang,
+      selectedLang: name,
     });
   }
-
 
   /**
-   * Handle change in Ratings' `props`
+   * Handles change in `<TravelerRating>`'s `props`.
+   * Uses React setState() to update `<App />`s `travelerRating` property.
    * @param {Object} event - The `Event` interface; a reference to the object onto which the event
    *                         was dispatched.
+   * @param {Object} event.target - The `target` property of the `Event` interface is a reference to
+   * the object onto which the event was dispatched.
+   * @param {string} event.target.name - The native DOM `name` attribute.
+   * @param {boolean} event.target.checked - The native `checked` DOM attribute.
    */
   handleRatingChange(event) {
-    // {String} `name` - A native DOM attribute
-    // {Boolean} `checked` - A native DOM attribute
     const { name, checked } = event.target;
-    const index = event.target.getAttribute('index'); // {String} `index` - A custom DOM attribute
-    const ratings = [...this.state.ratings]; // array copy
-
-    ratings[index] = {
-      [name]: checked,
-    };
-
+    const travelerRating = Object.assign({}, this.state.travelerRating); // Object copy.
+    
+    travelerRating[name] = checked;
 
     this.setState({
-      ratings,
+      travelerRating,
     });
   }
 
-
+  /**
+   * Handles change in `<Search>`'s `props`.
+   * Uses React setState() to update `<App />`s `search` property.
+   * @param {Object} event - The `Event` interface; a reference to the object onto which the event
+   *                         was dispatched.
+   * @param {Object} event.target - The `target` property of the `Event` interface is a reference to
+   * the object onto which the event was dispatched.
+   * @param {string} event.target.name - The native DOM `name` attribute.
+   * @param {string} event.target.value - The value of the native `name` DOM attribute.
+   */
   handleSearchChange(event) {
-    const { name, value } = event.target; // {String} `name` - A native DOM attr; equals to 'search'
+    const { name, value } = event.target; // {string} `name` - A native DOM attr; equals to 'search'
 
     this.setState({
       [name]: value, // 'search': value
     });
   }
 
-
+  /**
+   * Handles submit in `<Search>`'s `props`.
+   * Cancels the event.
+   * @param {Object} event - The `Event` interface; a reference to the object onto which the event
+   *                         was dispatched.
+   */
   handleSearchSubmit(event) {
     event.preventDefault();
   }
 
-
   /**
-   * Handle change in TimeOfYear's `props`
+   * Handle change in `<TimeOfYear>`'s `props`.
    * @param {Object} event - The `Event` interface; a reference to the object onto which the event
    *                         was dispatched.
+   * @param {string} event.target.name - The native DOM `name` attribute.
+   * @param {boolean} event.target.checked - The native `checked` DOM attribute.
    */
-  handleTimeChange(event) {
-    // {String} `name` - A native DOM attribute
-    // {Boolean} `checked` - A native DOM attribute
+  handleTimeOfYearChange(event) {
     const { name, checked } = event.target;
-    const index = event.target.getAttribute('index'); // {String} `index` - A custom DOM attribute
-    const times = [...this.state.times]; // array copy
+    const timeOfYear = Object.assign({}, this.state.timeOfYear); // Object copy.
 
-    times[index] = {
-      [name]: checked,
-    };
-
+    timeOfYear[name] = checked;
 
     this.setState({
-      times,
+      timeOfYear,
     });
   }
-
 
   /**
    * Handle change in TravelerType's `props`
    * @param {Object} event - The `Event` interface; a reference to the object onto which the event
    *                         was dispatched.
+   * @param {string} event.target.name - The native DOM `name` attribute.
+   * @param {boolean} event.target.checked - The native `checked` DOM attribute.
    */
-  handleTravelerChange(event) {
-    // {String} `name` - A native DOM attribute
-    // {Boolean} `checked` - A native DOM attribute
+  handleTravelerTypeChange(event) {
     const { name, checked } = event.target;
-    const index = event.target.getAttribute('index'); // {String} `index` - A custom DOM attribute
-    const types = [...this.state.types]; // array copy
+    const travelerType = Object.assign({}, this.state.travelerType); // Object copy.
 
-    types[index] = {
-      [name]: checked,
-    };
-
+    travelerType[name] = checked;
 
     this.setState({
-      types,
+      travelerType,
     });
   }
 
-
   /**
-   * PUT request - update `helpful` count for a review
+   * Handle `<ReviewList>`'s `onClick` event for `helpful` count button. 
+   * PUT request to update the database for a review.
    * @param {Object} event - The `Event` interface; a reference to then object onto which the event
    *                         was dispatched.
    */
-  updateHelpful(event) {
-    const { id } = event.target; // {String} `id` - e.g. '2,1' where '2' listing ID; '1' review ID
-    const _id = id.split(',').map((num) => Number.parseInt(num)); // {Array} `_id` - e.g. [2, 1]
+  updateReviewListHelpful(event) {
+    const parentIdEncrypted = event.target.getAttribute('data-parent-id');
+    const childIdEncrypted = event.target.getAttribute('data-child-id');
+    console.log(event.target)
+    console.log('hello', parentIdEncrypted, childIdEncrypted);
+    axios.put('/reviews', { parentIdEncrypted, childIdEncrypted }, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+    })
+      .then(({ data: reviews }) => {
+        // Iterate `reviews` to encrypt each document's `_id` field's elements.
+        for (let i = 0; i < reviews.length; i += 1) {
+          const { _id } = reviews[i];
+          reviews[i]._id = [AES.encrypt(`${_id[0]}`, key).toString(), AES.encrypt(`${_id[1]}`, key).toString()];
+        }
 
-    axios.put('/reviews', { _id }, OPTIONS)
-      .then(({ data: reviews }) => this.setState({ reviews }))
+        this.setState({ reviews })
+      })
       .catch(console.error);
   }
 
-
   /**
-   * Render
-   * @returns JSX element
+   * Render components as viewable elements in a browser.
+   * @returns {JSX} JSX element
    */
   render() {
     const {
-      languages,
-      ratings,
+      language,
+      travelerRating,
       reviews,
       search,
       selectedLang,
-      times,
-      types,
+      timeOfYear,
+      travelerType,
     } = this.state;
 
     return (
-      <div>
+      <Suspense fallback={renderLoader()}>
         <Header />
         <ReviewsBox>
-          <Ratings
-            ratings={ratings}
+          <TravelerRating
+            travelerRating={travelerRating}
             handleChange={this.handleRatingChange}
           />
           <TravelerType
-            types={types}
-            handleChange={this.handleTravelerChange}
+            travelerType={travelerType}
+            handleChange={this.handleTravelerTypeChange}
           />
           <TimeOfYear
-            times={times}
-            handleChange={this.handleTimeChange}
+            timeOfYear={timeOfYear}
+            handleChange={this.handleTimeOfYearChange}
           />
           <Languages
-            languages={languages}
+            language={language}
             selected={selectedLang}
             handleChange={this.handleLangChange}
           />
@@ -207,15 +269,16 @@ class App extends Component {
           handleChange={this.handleSearchChange}
           handleSubmit={this.handleSearchSubmit}
         />
-        <ReviewList
-          ratings={ratings}
+        {/* <ReviewList
+          travelerRating={travelerRating}
           reviews={reviews}
           target={search}
-          times={times}
-          types={types}
-          handleChange={this.updateHelpful}
-        />
-      </div>
+          timeOfYear={timeOfYear}
+          travelerType={travelerType}
+          updateHelpful={this.updateReviewListHelpful}
+        /> */}
+        <FlexBox reviews={filterSearch(search, filterAll(reviews, travelerRating, timeOfYear, travelerType))} updateHelpful={this.updateReviewListHelpful}/>
+      </Suspense>
     );
   }
 }
