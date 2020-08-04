@@ -1,19 +1,12 @@
 import axios from 'axios';
 import React, { Component, lazy, Suspense } from 'react';
 import { ReviewsBox } from '../css/style';
-import { /* filterMonths, filterRatings, filterTypes, */ filterAll, filterSearch, isPlural } from '../helpers/functions';
-import AES from 'crypto-js/aes';
-import UTF8 from 'crypto-js/enc-utf8';
-import dotenv from 'dotenv';
+import filter from '../es6_classes/Filter.js';
 
-dotenv.config();
-const key = process.env.REVIEW_LIST_KEY || '';
-
-const FlexBox = lazy(() => import('./FlexBox'));
 const Header = lazy(() => import('./Header'));
 const Languages = lazy(() => import('./Languages'));
 const TravelerRating = lazy(() => import('./TravelerRating'));
-// const ReviewList = lazy(() => import('./ReviewList.jsx'));
+const ReviewList = lazy(() => import('./ReviewList.jsx'));
 const Search = lazy(() => import('./Search'));
 const TimeOfYear = lazy(() => import('./TimeOfYear'));
 const TravelerType = lazy(() => import('./TravelerType'));
@@ -86,15 +79,7 @@ class App extends Component {
    */
   componentDidMount() {
     axios.get('/reviews')
-      .then(({ data: reviews }) => {
-        // Iterate `reviews` to encrypt each document's `_id` field's elements.
-        for (let i = 0; i < reviews.length; i += 1) {
-          const { _id } = reviews[i];
-          reviews[i]._id = [AES.encrypt(`${_id[0]}`, key).toString(), AES.encrypt(`${_id[1]}`, key).toString()];
-        }
-
-        this.setState({ reviews })
-      })
+      .then(({ data: reviews }) => this.setState({ reviews }))
       .catch(console.error);
   }
 
@@ -206,25 +191,15 @@ class App extends Component {
    * @param {Object} event - The `Event` interface; a reference to then object onto which the event
    *                         was dispatched.
    */
-  updateReviewListHelpful(event) {
-    const parentIdEncrypted = event.target.getAttribute('data-parent-id');
-    const childIdEncrypted = event.target.getAttribute('data-child-id');
-    console.log(event.target)
-    console.log('hello', parentIdEncrypted, childIdEncrypted);
-    axios.put('/reviews', { parentIdEncrypted, childIdEncrypted }, {
+  updateReviewListHelpful(data) {
+    const { publicListingId, publicReviewId, operand } = data;
+
+    axios.put('/reviews', { publicListingId, publicReviewId, operand }, {
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     })
-      .then(({ data: reviews }) => {
-        // Iterate `reviews` to encrypt each document's `_id` field's elements.
-        for (let i = 0; i < reviews.length; i += 1) {
-          const { _id } = reviews[i];
-          reviews[i]._id = [AES.encrypt(`${_id[0]}`, key).toString(), AES.encrypt(`${_id[1]}`, key).toString()];
-        }
-
-        this.setState({ reviews })
-      })
+      .then(({ data: reviews }) => this.setState({ reviews }))
       .catch(console.error);
   }
 
@@ -269,15 +244,10 @@ class App extends Component {
           handleChange={this.handleSearchChange}
           handleSubmit={this.handleSearchSubmit}
         />
-        {/* <ReviewList
-          travelerRating={travelerRating}
-          reviews={reviews}
-          target={search}
-          timeOfYear={timeOfYear}
-          travelerType={travelerType}
+        <ReviewList
+          reviews={filter.filterAll(reviews, travelerRating, timeOfYear, travelerType, search)}
           updateHelpful={this.updateReviewListHelpful}
-        /> */}
-        <FlexBox reviews={filterSearch(search, filterAll(reviews, travelerRating, timeOfYear, travelerType))} updateHelpful={this.updateReviewListHelpful}/>
+        />
       </Suspense>
     );
   }
