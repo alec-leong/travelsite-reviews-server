@@ -1,3 +1,5 @@
+require('dotenv').config();
+require('../database/index.js');
 const colors = require('colors');
 const compression = require('compression');
 const cors = require('cors');
@@ -8,100 +10,130 @@ const Promise = require('bluebird');
 const open = require('open');
 const os = require('os');
 const spdy = require('spdy');
-const { OPTIONS, PORT } = require('./config.js');
-const { Listings } = require('../db/index.js');
+const spdyOptions = require('./config.js');
+const Listings = require('../database/model.js');
+const AES = require('crypto-js/aes');
+const UTF8 = require('crypto-js/enc-utf8');
 
-
-/* ===================================== Express application ==================================== */
-
-// create express application
+// Create ExpressJS application.
 const app = express();
 
-// enable cors
+/* ========================================= Middleware ========================================= */
+
+// Enable cross-origin resource sharing (CORS).
 app.use(cors());
 
-// compression middleware
+// Compression middleware.
 app.use(compression());
 
-// security-related HTTP middleware
+// Security-related HTTP middleware.
 app.use(helmet());
 
-// set the 'Content-Type' that the middleware will parse
+// Set 'Content-Type' that the middleware will parse.
 app.use(express.json());
 
-// logger
-app.use(({ body, method, secure, url }, res, next) => {
+// Logging middleware.
+app.use(({ body, method, url }, res, next) => {
   console.log(`${method.yellow} request at ${url.cyan}`);
   console.log(body);
 
-  // next middleware
-  next();
+  next(); // Next middleware.
 });
 
-// serving static file
+// Serving static file.
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 /* ==================================== HTTP request handlers =================================== */
 
-// for '../test/server.test.js'
+// Secret key.
+const key = process.env.REVIEW_LIST_KEY || '';
+
+// for `../test/server.test.js`
 app.get('/reviews/:id', ({ params: { id } }, res) => {
-  Listings.findById(id)
-    .then((query) => res.status(200).send(query))
+  Listings
+    .findById(id)
+    .then((document) => res.status(200).send(document))
     .catch((err) => res.status(500).send(err));
 });
 
 app.get('/reviews', (req, res) => {
-  Listings.findOne()
+  Listings
+    .findOne({ // Conditions.
+      /* No conditions */
+    }, { 
+      _id: 0,
+      __v: 0,
+      'reviews._id': 0 
+    }) // Exclude `_id`, `__v`, and subdocument `review`'s `id` fields.
     .then(({ reviews }) => res.status(200).send(reviews))
     .catch((err) => res.status(500).send(err));
 });
 
-app.put('/reviews', ({ body: { _id } }, res) => { // nested destructuring
-  Listings.findOne()
-    .then((query) => {
-      const doc = query;
-      doc.reviews.id(_id).helpful += 1;
-      return Listings.findByIdAndUpdate({ _id: _id[0] }, new Listings(doc));
+app.put('/reviews', (req, res) => {
+  const { publicListingId, publicReviewId, operand } = req.body;
+
+  // Decrypt request parameters.
+  const listingId = AES.decrypt(publicListingId, key).toString(UTF8);
+  const [,reviewId] =  AES.decrypt(publicReviewId, key).toString(UTF8).split(',');
+
+  Listings
+    .findOneAndUpdate({ // Conditions.
+      _id: listingId,
+      'reviews._id': reviewId,
+    }, {
+      $inc: { // Increment subdocument's `helpful` field by +/-1.
+        'reviews.$.helpful': operand,
+      }, 
+    }, {
+      new: true, // If you set new: true, findOneAndUpdate() will instead give you the object after update was applied. Source: https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
+      fields: '-_id -__v -reviews._id', // Exclude `_id`, `__v`, and subdocument `review`'s `id` fields. Source: https://mongoosejs.com/docs/api.html#query_Query-select
     })
-    .then(() => Listings.findOne())
-    .then(({ reviews }) => res.status(200).send(reviews)) // update
+    .then((document) => {
+      /** document
+       * {
+       *    publicListingId: String,
+       *    reviews: [Object]
+       * }
+       */
+      const { reviews } = document;
+      res.status(200).send(reviews)
+    })
     .catch((err) => res.status(500).send(err));
 });
 
 /* ========================================= SPDY server ======================================== */
 
-const server = spdy.createServer(OPTIONS, app);
-server.listen = Promise.promisify(server.listen);
-server.listen(PORT)
-  .then(() => {
-    console.log(`SPDY server listening on PORT ${colors.green(PORT)}`);
-    
-    if (process.env.MODE === 'dev') {
-      let app;
-      switch(os.type()) {
-        case 'Linux':
-          app = 'google-chrome';
-          break;
-        case 'Darwin':
-          app = 'google chrome';
-          break;
-        case 'Windows_NT':
-          app = 'chrome';
-          break;
-        default:
-          app = null;
-      }
+const server = spdy.createServer(spdyOptions, app);
+const port = process.env.APP_PORT || 3000;
 
-      if (
-        app && 
-        (process.env.SERVER_HOST === 'localhost' || process.env.SERVER_HOST === '127.0.0.1')
-      ) {
-          open(`http://localhost:${PORT}`, { app })
-      }
-    }
+server.listen = Promise.promisify(server.listen);
+server.listen(port)
+  .then(() => {
+    console.log(`SPDY server listening on port ${colors.green(port)}`);
+
+    // if (
+    //   process.env.NODE_ENV === 'development'
+    //   && (process.env.APP_HOST === 'localhost' || process.env.APP_HOST === '127.0.0.1')
+    // ) {
+    //   let browser;
+    //   switch (os.type()) {
+    //     case 'Linux':
+    //       browser = 'google-chrome';
+    //       break;
+    //     case 'Darwin':
+    //       browser = 'google chrome';
+    //       break;
+    //     case 'Windows_NT':
+    //       browser = 'chrome';
+    //       break;
+    //     default:
+    //       browser = null;
+    //   }
+
+    //   if (browser) {
+    //     const protocol = /^(https|HTTP\/2|HTTP2)/i.test(process.env.APP_PROTOCOL) ? 'https' : 'http';
+    //     open(`${protocol}://localhost:${port}`, { browser });
+    //   }
+    // }
   })
   .catch(console.error);
-
-module.exports = {
-  server,
-};
