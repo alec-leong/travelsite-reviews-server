@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 
-// const Font = styled('font')`
-//   font-family: 'Trip Sans', Arial, sans-serif !important;
-//   font-size: 14px;
-// `;
-
-// Style <p> tag in `Languages`, `Ratings`, `TimeOfYear`, and `TravelerType` components
+// Style <p> tag in `Languages`, `TravelerRating`, `TimeOfYear`, and `TravelerType` components
 const P = styled.p`
   font-family: 'Trip Sans', Arial, sans-serif !important;
   font-size: 14px;
@@ -13,7 +8,7 @@ const P = styled.p`
   color: rgb(0, 10, 18);
 `;
 
-// Style <label> tag in `Languages`, `Ratings`, `TimeOfYear`, and `TravelerType` components
+// Style <label> tag in `Languages`, `TravelerRating`, `TimeOfYear`, and `TravelerType` components
 const Label = styled.label`
   font-family: 'Trip Sans', Arial, sans-serif !important;
   font-size: 14px;
@@ -147,7 +142,6 @@ const InputSearch = styled.input.attrs({
 
 const LabelSearch = styled.label`
   width: 100%;
-  color: #ececec;
 `;
 
 export {
