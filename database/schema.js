@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const modelName = require('./modelName.js');
 
 const { Schema } = mongoose;
 
@@ -16,7 +17,7 @@ const reviewsSchema = new Schema({
   publicListingId: {
     type: String,
     minlength: 1,
-    ref: 'Listings',
+    ref: modelName,
   },
   username: {
     type: String,
