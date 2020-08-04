@@ -60,10 +60,10 @@ app.get('/reviews', (req, res) => {
   Listings
     .findOne({ // Conditions.
       /* No conditions */
-    }, { 
+    }, {
       _id: 0,
       __v: 0,
-      'reviews._id': 0 
+      'reviews._id': 0,
     }) // Exclude `_id`, `__v`, and subdocument `review`'s `id` fields.
     .then(({ reviews }) => res.status(200).send(reviews))
     .catch((err) => res.status(500).send(err));
@@ -74,7 +74,7 @@ app.put('/reviews', (req, res) => {
 
   // Decrypt request parameters.
   const listingId = AES.decrypt(publicListingId, key).toString(UTF8);
-  const [,reviewId] =  AES.decrypt(publicReviewId, key).toString(UTF8).split(',');
+  const [,reviewId] = AES.decrypt(publicReviewId, key).toString(UTF8).split(',');
 
   Listings
     .findOneAndUpdate({ // Conditions.
@@ -83,7 +83,7 @@ app.put('/reviews', (req, res) => {
     }, {
       $inc: { // Increment subdocument's `helpful` field by +/-1.
         'reviews.$.helpful': operand,
-      }, 
+      },
     }, {
       new: true, // If you set new: true, findOneAndUpdate() will instead give you the object after update was applied. Source: https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
       fields: '-_id -__v -reviews._id', // Exclude `_id`, `__v`, and subdocument `review`'s `id` fields. Source: https://mongoosejs.com/docs/api.html#query_Query-select
@@ -96,7 +96,7 @@ app.put('/reviews', (req, res) => {
        * }
        */
       const { reviews } = document;
-      res.status(200).send(reviews)
+      res.status(200).send(reviews);
     })
     .catch((err) => res.status(500).send(err));
 });
