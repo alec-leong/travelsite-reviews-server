@@ -340,7 +340,7 @@ export default class ReviewList extends React.Component {
 
               <ReportFollowFlexRowReversed>
                 <ReportFollowFlexCol>
-                  <ReportOrFollowButton 
+                  <ReportOrFollowButton
                     name="reportFollowButton"
                     value={tracklHelpfulAndReportFollow[publicReviewId].isReportFollowedClicked}
                     data-public-review-id={publicReviewId}
