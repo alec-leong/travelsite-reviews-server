@@ -308,7 +308,7 @@ export default class ReviewList extends React.Component {
               <a href="">
                 <ProfileImg
                   alt=""
-                  src="http://www.newdesignfile.com/postpic/2014/07/generic-profile-avatar_352864.jpg"
+                  src="profile_avatar.jpg"
                 />
               </a>
               <ProfileUserFlexCol>
@@ -322,7 +322,7 @@ export default class ReviewList extends React.Component {
                 <UserLocationFlexRow>
                   <MapMarkerImg
                     alt=""
-                    src="https://developers.google.com/maps/images/lhimages/api/icon_placesapi.svg"
+                    src="icon_placesapi.svg"
                   />
                   <span>
                     {location}
